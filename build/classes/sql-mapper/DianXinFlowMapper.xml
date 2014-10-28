@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IDianXinFlowDao" >
+
+  <select id="findById" resultType="com.lkb.bean.DianXinFlow" parameterType="String">
+    select * from t_dianxinflow
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteDianXinFlow" parameterType="String" >
+    delete from t_dianxintelflow
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveDianXinFlow" parameterType="com.lkb.bean.DianXinFlow" >
+    insert into t_dianxinflow (id,phone,dependCycle,queryMonth,allFlow,allTime,allPay)
+    values (#{id,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{dependCycle,jdbcType=VARCHAR}, #{queryMonth,jdbcType=TIMESTAMP},#{allFlow,jdbcType=DECIMAL},
+      #{allTime,jdbcType=DECIMAL}, #{allPay,jdbcType=DECIMAL})
+  </insert>
+
+  
+   <update id="update" parameterType="com.lkb.bean.DianXinFlow" >
+    update t_dianxinflow   
+    <set > 
+      <if test="dependCycle != null" >
+        dependCycle = #{dependCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="queryMonth != null" >
+        queryMonth = #{queryMonth,jdbcType=TIMESTAMP},
+      </if>
+       <if test="allFlow != null" >
+        allFlow = #{allFlow,jdbcType=DECIMAL},
+      </if>
+       <if test="allTime != null" >
+        allTime = #{allTime,jdbcType=DECIMAL},
+      </if>
+       <if test="allPay != null" >
+        allPay = #{allPay,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getDianXinFlowBybc" parameterType="map" resultType="com.lkb.bean.DianXinFlow">
+ 	SELECT * FROM `t_dianxinflow` t  WHERE t.phone=#{phone} AND t.queryMonth=#{queryMonth}
+</select>
+<!-- <select id="getDianXinTelForReport1" parameterType="map" resultType="map">
+ 	select teleno,avg(cAllPay) as avg,min(cTime) as earlest  from `t_dianxintel` t where t.teleno=#{teleno}
+</select>
+ <select id="getEveryAmount" parameterType="map" resultType="map">
+ SELECT SUM(cAllPay) AS amount FROM  `t_dianxintel` WHERE teleno in 
+  <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach> 
+ AND cTime LIKE  #{cTime} 
+</select> -->
+<!-- 姜宗仁添加     报告使用《details phoneDetail》 -->
+<select id="getDianXinFlowForReport" parameterType="String" resultType="map">
+ 	select t.queryMonth as time, t.allFlow ,t.allTime,t.allPay   from `t_dianxinflow` t where t.phone=#{phone}
+</select>
+<!-- 姜宗仁添加     报告使用《details phoneDetail》 -->
+<select id="getMaxAccountTime" parameterType="String" resultType="com.lkb.bean.DianXinFlow">
+ 	SELECT * FROM `t_dianxinflow` t  WHERE t.phone=#{phone}  order by t.queryMonth desc limit 1
+</select>
+<select id="getMaxNumTel" parameterType="map" resultType="Date">
+ 	SELECT t.queryMonth as queryMonth FROM `t_dianxinflow` t  WHERE t.phone=#{phone}  order by t.queryMonth desc limit 12
+</select>
+<select id="getFormatQueryTime" parameterType="String" resultType="map">
+ 	select DATE_FORMAT(t.queryMonth, '%Y%m') as queryMonth,t.allPay from `t_dianxinflow` t where t.phone =#{phone} order by t.queryMonth desc
+</select>
+
+   <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_dianxinflow (id,phone,dependCycle,queryMonth,allFlow,allTime,allPay) values  
+    <foreach collection="list" item="dianxinflow" index="index"  
+        separator=",">  
+        ( 
+      #{dianxinflow.id,jdbcType=VARCHAR}, #{dianxinflow.phone,jdbcType=VARCHAR}, #{dianxinflow.dependCycle,jdbcType=VARCHAR}, #{dianxinflow.queryMonth,jdbcType=TIMESTAMP},#{dianxinflow.allFlow,jdbcType=DECIMAL},
+      #{dianxinflow.allTime,jdbcType=DECIMAL}, #{dianxinflow.allPay,jdbcType=DECIMAL}
+     	)  
+    </foreach>  
+   </insert> 
+
+
+</mapper>

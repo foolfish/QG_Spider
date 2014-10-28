@@ -1,0 +1,8 @@
+inputarea=span.inputarea
+xjxlTable=table.xjxlTable
+tr=tr
+td=td
+lt=input[name=lt]
+_eventId=input[name=_eventId]
+submit=input[name=submit]
+captcha=input[id=captcha]

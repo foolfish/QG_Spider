@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IPayInfoDao" >
+
+  <select id="findById" resultType="com.lkb.bean.PayInfo" parameterType="String">
+    select * from t_payinfo
+    where id = #{id}
+  </select>
+  
+  <delete id="deletePayInfo" parameterType="String" >
+    delete from t_payinfo
+    where id = #{id}
+  </delete>
+
+
+  <insert id="savePayInfo" parameterType="com.lkb.bean.PayInfo" >
+    insert into t_payinfo (id,payTime,tradeType,tradeNoType,amount,tradeNo,receiverName,status,source,alipayName)
+    values (#{id,jdbcType=VARCHAR},#{payTime,jdbcType=TIMESTAMP}, #{tradeType,jdbcType=VARCHAR}, #{tradeNoType,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL}, #{tradeNo,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR}
+      , #{status,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR},#{alipayName,jdbcType=VARCHAR})
+  </insert>
+  
+  
+
+<select id="getPayInfoByTradeNoSource" parameterType="map" resultType="com.lkb.bean.PayInfo">
+ SELECT * FROM `t_payinfo` t  WHERE t.tradeNo=#{tradeNo} AND t.source=#{source}
+</select>
+
+ <select id="getPayInfoByBaseUserIdSource" parameterType="map" resultType="com.lkb.bean.PayInfo">
+ SELECT * FROM `t_payinfo` t  WHERE t.alipayName=#{alipayName} AND t.source=#{source}  order by t.payTime 
+</select>
+
+ <select id="getAmountCountLt" parameterType="map" resultType="map">
+	SELECT SUM(amount) AS amount,COUNT(*) AS acount,source  FROM `t_payinfo` WHERE STATUS = '交易成功' and alipayName=#{alipayName} AND amount  &lt; 0 
+</select>
+
+ <select id="getAmountCountGt" parameterType="map" resultType="map">
+	SELECT SUM(amount) AS amount,COUNT(*) AS acount,source  FROM `t_payinfo` WHERE STATUS = '交易成功' and alipayName=#{alipayName} AND amount  &gt; 0
+</select>
+
+<select id="getFirstDay" parameterType="map" resultType="map">
+SELECT payTime  FROM `t_payinfo`
+WHERE   alipayName in 
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+ORDER BY payTime  LIMIT 1;
+</select>
+
+
+<select id="getRecentDay" parameterType="map" resultType="map">
+SELECT payTime  FROM `t_payinfo`
+WHERE  alipayName in 
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+				ORDER BY payTime DESC LIMIT 1;
+</select>
+
+<select id="getamountcount" parameterType="map" resultType="map">
+SELECT SUM(AMOUNT) AS amount, COUNT(id) AS paycount FROM `t_payinfo` WHERE  
+alipayName in 
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+AND tradeType='代付'
+</select>
+
+<select id="getLargeAmount" parameterType="map" resultType="map">
+SELECT MIN(AMOUNT) AS amount FROM `t_payinfo` WHERE 
+alipayName in 
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+</select>
+
+<select id="getAllSum" parameterType="map" resultType="map">
+SELECT SUM(AMOUNT) AS amount,COUNT(id) as sumcount FROM `t_payinfo` WHERE 
+alipayName in 
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+</select>
+
+
+<select id="getEveryAmount" parameterType="map" resultType="map">
+SELECT SUM(amount) AS amount FROM `t_payinfo` WHERE STATUS  LIKE '%交易成功%' AND
+ alipayName in 
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach> 
+				AND payTime LIKE #{payTime}
+</select>
+
+
+
+
+
+
+   <update id="update" parameterType="com.lkb.bean.PayInfo" >
+    update t_payinfo
+    <set > 
+      <if test="payTime != null" >
+        payTime = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeType != null" >
+        tradeType = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeNoType != null" >
+        tradeNoType = #{tradeNoType,jdbcType=VARCHAR},
+      </if>
+        <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+        <if test="tradeNo != null" >
+        tradeNo = #{tradeNo,jdbcType=VARCHAR},
+      </if>	 		
+       <if test="receiverName != null" >
+        receiverName = #{receiverName,jdbcType=VARCHAR},
+      </if>
+       <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+       <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+       <if test="alipayName != null" >
+        alipayName = #{alipayName,jdbcType=VARCHAR},
+      </if>
+
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+	
+ <select id="getMaxOrderAssignTime" parameterType="map" resultType="map">
+ 	SELECT t.payTime,t.status FROM t_payinfo t  WHERE t.alipayName=#{alipayName} and t.source=#{source} and t.payTime&gt;#{payTime} order by t.tradeNo desc
+</select>
+ <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_payinfo (id,payTime,tradeType,tradeNoType,amount,tradeNo,receiverName,status,source,alipayName) values  
+    <foreach collection="list" item="pay" index="index"  
+        separator=",">  
+        ( #{pay.id,jdbcType=VARCHAR},#{pay.payTime,jdbcType=TIMESTAMP}, #{pay.tradeType,jdbcType=VARCHAR}, #{pay.tradeNoType,jdbcType=VARCHAR}, 
+      #{pay.amount,jdbcType=DECIMAL}, #{pay.tradeNo,jdbcType=VARCHAR}, #{pay.receiverName,jdbcType=VARCHAR}
+      , #{pay.status,jdbcType=VARCHAR}, #{pay.source,jdbcType=VARCHAR},#{pay.alipayName,jdbcType=VARCHAR}
+     	)  
+     	
+    </foreach>  
+   </insert> 
+</mapper>

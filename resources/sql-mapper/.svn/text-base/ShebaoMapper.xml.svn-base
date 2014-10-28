@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.ISheBaoDao" >
+
+  <select id="findById" resultType="com.lkb.bean.SheBao" parameterType="String">
+    select * from t_shebao
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteSheBao" parameterType="String" >
+    delete from t_shebao
+    where id = #{id}
+  </delete>
+
+
+	
+  <insert id="saveSheBao" parameterType="com.lkb.bean.SheBao" >
+    insert into t_shebao (id, payTime, payFeedBase,payFeedPerson,payMedPerson,payUmemplyPerson,source,loginName,payInjuryPerson,payFeedCom,payMedCom,payUmemplyCom,
+    payInjuryCom,payFeedAll,payMedAll,payUmemplyAll,payInjuryAll,payCompany,  payMedBase , payUmemplyBase , payInjuryBase)
+    values ( #{id,jdbcType=VARCHAR},    #{payTime,jdbcType=TIMESTAMP}, #{payFeedBase,jdbcType=DECIMAL}, #{payFeedPerson,jdbcType=DECIMAL}, 
+      #{payMedPerson,jdbcType=DECIMAL}, #{payUmemplyPerson,jdbcType=DECIMAL}, #{source,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
+      #{payInjuryPerson,jdbcType=DECIMAL},  #{payFeedCom,jdbcType=DECIMAL},  #{payMedCom,jdbcType=DECIMAL},  #{payUmemplyCom,jdbcType=DECIMAL},
+      #{payInjuryCom,jdbcType=DECIMAL},  #{payFeedAll,jdbcType=DECIMAL},  #{payMedAll,jdbcType=DECIMAL},  #{payUmemplyAll,jdbcType=DECIMAL}, 
+      #{payInjuryAll,jdbcType=DECIMAL}, #{payCompany,jdbcType=VARCHAR},#{payMedBase,jdbcType=DECIMAL},#{payUmemplyBase,jdbcType=DECIMAL},
+      #{payInjuryBase,jdbcType=DECIMAL})
+  </insert>
+
+
+  
+ 	
+<select id="getAmountCount" parameterType="map" resultType="map">
+	SELECT SUM(payFeedBase) AS amount,COUNT(*) AS acount, source FROM t_shebao WHERE  loginName = #{loginName} 
+</select>
+		
+	
+ <select id="getSheBaoByBaseUseridsource" parameterType="map" resultType="com.lkb.bean.SheBao">
+ SELECT * FROM `t_shebao` t  WHERE t.loginName=#{loginName} AND t.source=#{source} 
+   	<if test="payTime != null" >
+        AND t.payTime = #{payTime}
+      </if>
+	order by t.payTime
+</select>
+
+
+   <update id="update" parameterType="com.lkb.bean.SheBao" >
+    update t_shebao
+    <set > 
+       <if test="payTime != null" >
+        payTime = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="payFeedBase != null" >
+        payFeedBase = #{payFeedBase,jdbcType=DECIMAL},
+      </if>
+      <if test="payFeedPerson != null" >
+        payFeedPerson = #{payFeedPerson,jdbcType=DECIMAL},
+      </if>
+		<if test="payMedPerson != null" >
+        payMedPerson = #{payMedPerson,jdbcType=DECIMAL},
+      </if>
+      <if test="payUmemplyPerson != null" >
+        payUmemplyPerson = #{payUmemplyPerson,jdbcType=DECIMAL},
+      </if>
+ 		<if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if> 
+      	<if test="loginName != null" >
+        loginName = #{loginName,jdbcType=VARCHAR},
+      </if> 
+       <if test="payInjuryPerson != null" >
+        payInjuryPerson = #{payInjuryPerson,jdbcType=DECIMAL},
+      </if>
+       <if test="payFeedCom != null" >
+        payFeedCom = #{payFeedCom,jdbcType=DECIMAL},
+      </if>
+       <if test="payMedCom != null" >
+        payMedCom = #{payMedCom,jdbcType=DECIMAL},
+      </if>
+       <if test="payUmemplyCom != null" >
+        payUmemplyCom = #{payUmemplyCom,jdbcType=DECIMAL},
+      </if>
+       <if test="payInjuryCom != null" >
+        payInjuryCom = #{payInjuryCom,jdbcType=DECIMAL},
+      </if>
+       <if test="payFeedAll != null" >
+        payFeedAll = #{payFeedAll,jdbcType=DECIMAL},
+      </if>
+       <if test="payMedAll != null" >
+        payMedAll = #{payMedAll,jdbcType=DECIMAL},
+      </if>
+       <if test="payUmemplyAll != null" >
+        payUmemplyAll = #{payUmemplyAll,jdbcType=DECIMAL},
+      </if>
+       <if test="payInjuryAll != null" >
+        payInjuryAll = #{payInjuryAll,jdbcType=DECIMAL},
+      </if>
+       <if test="payUmemplyPerson != null" >
+        payUmemplyPerson = #{payUmemplyPerson,jdbcType=DECIMAL},
+      </if>
+      	<if test="payCompany != null" >
+        payCompany = #{payCompany,jdbcType=VARCHAR},
+      </if> 
+       <if test="payMedBase != null" >
+        payMedBase = #{payMedBase,jdbcType=DECIMAL},
+      </if>
+       <if test="payUmemplyBase != null" >
+        payUmemplyBase = #{payUmemplyBase,jdbcType=DECIMAL},
+      </if>
+       <if test="payInjuryBase != null" >
+        payInjuryBase = #{payInjuryBase,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+    <select id="getSheBaoForReport1" parameterType="map" resultType="map">
+  
+  select min(payTime) as start,max(payTime) as end,min(payFeedBase) as min,max(payFeedBase) as max,
+  avg(payFeedBase) as avg from `t_shebao` t where t.loginName in
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+
+</select>
+<select id="getSheBaoForReport2" parameterType="map" resultType="map">
+  
+  select avg(payFeedBase) as avgLastYear from `t_shebao` t where payTime >= #{payTime} and t.loginName
+  in
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+
+</select>
+
+<select id="getEveryAmount" parameterType="map" resultType="map">
+ SELECT SUM(payFeedBase-payFeedPerson-payMedPerson) AS amount FROM  `t_shebao` WHERE loginName   in
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+				AND payTime LIKE  #{payTime} 
+</select>
+
+<select id="getCount" parameterType="map" resultType="map">
+SELECT COUNT(id) as shebaocount FROM t_shebao WHERE loginName= #{loginName}
+ <if test="payCompany != null" >
+    AND    payCompany = #{payCompany}
+</if>
+</select>
+
+<select id="getRecentCompany" parameterType="map" resultType="map">
+SELECT payCompany FROM `t_shebao` WHERE loginName=#{loginName} ORDER BY paytime DESC LIMIT 1
+</select>
+
+<select id="getRecentPayFeedBase" parameterType="map" resultType="map">
+SELECT payFeedBase FROM `t_shebao` WHERE loginName=#{loginName} ORDER BY paytime DESC LIMIT 1
+</select>
+
+
+</mapper>

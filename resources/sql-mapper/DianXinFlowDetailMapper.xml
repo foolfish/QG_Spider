@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IDianXinFlowDetailDao" >
+
+  <select id="findById" resultType="com.lkb.bean.DianXinFlowDetail" parameterType="String">
+    select * from t_dianxinflowdetail
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteDianXinFlowDetail" parameterType="String" >
+    delete from t_dianxinflowdetail
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveDianXinFlowDetail" parameterType="com.lkb.bean.DianXinFlowDetail" >
+    insert into t_dianxinflowdetail (id,phone,iscm,beginTime,tradeTime,flow,netType,location,business,fee)
+    values (#{id,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{iscm,jdbcType=INTEGER},#{beginTime,jdbcType=TIMESTAMP}, #{tradeTime,jdbcType=INTEGER}, #{flow,jdbcType=INTEGER}, #{netType,jdbcType=VARCHAR}, #{location,jdbcType=VARCHAR}, #{business,jdbcType=VARCHAR}, #{fee,jdbcType=DECIMAL} )
+  </insert>
+  
+	
+ 
+   <update id="update" parameterType="com.lkb.bean.DianXinFlowDetail" >
+    update t_dianxinflowdetail   
+    <set > 
+      <if test="beginTime != null" >
+        beginTime = #{beginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeTime != null" >
+        tradeTime = #{tradeTime,jdbcType=INTEGER },
+      </if>
+       <if test="flow != null" >
+        flow = #{flow,jdbcType=INTEGER },
+      </if>
+       <if test="netType != null" >
+        netType = #{netType,jdbcType=VARCHAR },
+      </if>
+       <if test="location != null" >
+        location = #{location,jdbcType=VARCHAR },
+      </if>
+      <if test="business != null" >
+        business = #{business,jdbcType=VARCHAR },
+      </if>
+      <if test="fee != null" >
+        fee = #{fee,jdbcType=DECIMAL },
+      </if>
+      <if test="iscm != null" >
+        iscm = #{iscm,jdbcType=INTEGER },
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getDianXinFlowDetailBypt" parameterType="map" resultType="com.lkb.bean.DianXinFlowDetail">
+ 	SELECT * FROM `t_dianxinflowdetail` t  WHERE t.phone=#{phone} AND t.beginTime=#{beginTime}
+</select>
+ <select id="getMaxFlowTime" parameterType="String" resultType="com.lkb.bean.DianXinFlowDetail">
+ 	SELECT * FROM `t_dianxinflowdetail` t  WHERE t.phone=#{phone} order by beginTime desc limit 1
+</select>
+
+<!--  <select id="getDianXinFlowDetailForReport" parameterType="map" resultType="map">
+ 	select  recevierPhone,callWay ,sum(tradeTime) as tradetimes ,tradeAddr,count(id) as num from
+ 	`t_dianxinflowdetail` t  WHERE t.phone=#{phone}  group by t.recevierPhone,t.tradeType order by t.recevierPhone;
+</select>
+ <select id="getDianXinDetailForReport2" parameterType="map" resultType="map">
+ select max(cTime) as latest from `t_dianxindetail` t  where t.phone=#{teleno};
+</select> -->
+<!-- 姜宗仁添加     报告使用《details phoneDetail》 -->
+<select id="getDianXinFlowDetailForReport" parameterType="String" resultType="map">
+ 	select t.beginTime as cTime,t.tradeTime,t.flow,t.location as tradeAddr,t.netType,t.fee  from `t_dianxinflowdetail` t  WHERE t.phone=#{phone} ;
+</select>
+<!-- 姜宗仁添加     报告使用《details phoneDetail》 -->
+ <select id="getDianXinFlowDetail" parameterType="String" resultType="map">
+ 	SELECT beginTime,tradeTime,flow,netType,location,business,fee from `t_dianxinflowdetail` t   WHERE t.phone=#{phone}
+</select>
+
+   <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_dianxinflowdetail (id,phone,iscm,beginTime,tradeTime,flow,netType,location,business,fee) values  
+    <foreach collection="list" item="dianxinflowdetail" index="index"  
+        separator=",">  
+        ( 
+    #{dianxinflowdetail.id,jdbcType=VARCHAR}, #{dianxinflowdetail.phone,jdbcType=VARCHAR}, #{dianxinflowdetail.iscm,jdbcType=INTEGER},#{dianxinflowdetail.beginTime,jdbcType=TIMESTAMP}, #{dianxinflowdetail.tradeTime,jdbcType=INTEGER}, #{dianxinflowdetail.flow,jdbcType=INTEGER}, #{dianxinflowdetail.netType,jdbcType=VARCHAR}, #{dianxinflowdetail.location,jdbcType=VARCHAR}, #{dianxinflowdetail.business,jdbcType=VARCHAR}, #{dianxinflowdetail.fee,jdbcType=DECIMAL}
+     
+     	)  
+    </foreach>  
+   </insert> 
+
+
+
+</mapper>

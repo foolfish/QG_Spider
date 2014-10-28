@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IUniversityDao" >
+
+  <select id="getAll" resultType="list" >
+    select * from t_university
+  </select>
+  
+   <select id="get" resultType="com.lkb.bean.University" parameterType="Integer">
+    select * from t_university where id = #{id}
+  </select>
+   <select id="getObjByType" resultType="list" parameterType="Boolean">
+    select * from t_university where type = #{type}
+  </select>
+  
+   <select id="getObjByName" resultType="int" parameterType="map">
+    select count(*) as count from t_university where name like #{name}
+  </select>
+  
+
+	
+  <insert id="save" parameterType="com.lkb.bean.University" >
+    insert into t_yuebao (name,type)
+    values (#{name,jdbcType=VARCHAR}, #{type,jdbcType=tinyint})
+  </insert>
+	
+
+		
+</mapper>

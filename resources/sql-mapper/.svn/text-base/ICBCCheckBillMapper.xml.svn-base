@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.ICBCCheckBillDao" >
+
+  <select id="findById" resultType="com.lkb.bean.ICBCCheckBill" parameterType="String">
+    select * from t_icbccheckbill
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteICBCCheckBill" parameterType="String" >
+    delete from t_icbccheckbill
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveICBCCheckBill" parameterType="com.lkb.bean.ICBCCheckBill" >
+    insert into t_icbccheckbill ( id,baseUserId,cardHolder,cardNo,repaymentDate,period,BillGenerationDate,
+    previousBalance ,currentIncome ,currentExpenses ,currentBalance ,personalIntegration )
+    values (#{id,jdbcType=VARCHAR},#{baseUserId,jdbcType=VARCHAR},#{cardHolder,jdbcType=VARCHAR},
+     #{cardNo,jdbcType=VARCHAR},#{repaymentDate,jdbcType=TIMESTAMP}, #{period,jdbcType=VARCHAR},
+     #{BillGenerationDate,jdbcType=TIMESTAMP},#{previousBalance,jdbcType=DECIMAL} ,
+     #{currentIncome,jdbcType=DECIMAL},#{currentExpenses,jdbcType=DECIMAL},#{currentBalance,jdbcType=DECIMAL},
+     #{personalIntegration,jdbcType=DECIMAL}
+     )
+  </insert>
+
+  
+   <update id="update" parameterType="com.lkb.bean.ICBCCheckBill" >
+    update t_icbccheckbill   
+    <set > 
+     <if test="baseUserId != null" >
+        baseUserId = #{baseUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardHolder != null" >
+        cardHolder = #{cardHolder,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        cardNo = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="repaymentDate != null" >
+        repaymentDate = #{repaymentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="period != null" >
+        period = #{period,jdbcType=VARCHAR},
+      </if>
+      <if test="BillGenerationDate != null" >
+        BillGenerationDate = #{BillGenerationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="previousBalance != null" >
+        previousBalance = #{previousBalance,jdbcType=DECIMAL} ,
+      </if>
+      <if test="currentIncome != null" >
+        currentIncome = #{currentIncome,jdbcType=DECIMAL} ,
+      </if>
+      <if test="currentExpenses != null" >
+        currentExpenses = #{currentExpenses,jdbcType=DECIMAL} ,
+      </if>
+      <if test="currentBalance != null" >
+        currentBalance = #{currentBalance,jdbcType=DECIMAL} ,
+      </if>
+      <if test="personalIntegration != null" >
+        personalIntegration = #{personalIntegration,jdbcType=DECIMAL} ,
+      </if>
+
+      
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getBillByBaseUserIdDate" parameterType="map" resultType="com.lkb.bean.ICBCCheckBill">
+ SELECT * FROM `t_icbccheckbill` t  WHERE t.baseUserId=#{baseUserId}  AND t.BillGenerationDate=#{BillGenerationDate}
+</select>
+ 
+
+ 
+
+</mapper>

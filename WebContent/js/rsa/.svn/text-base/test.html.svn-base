@@ -1,0 +1,29 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<script src="jquery-1.9.1.min.js"></script>
+	<script src="he_nan_yd_rsa.js"></script>
+	<style>
+	.error-tip {
+		display: inline-block;
+		margin-left: 10px;
+		color: #F71717;
+		background: #FFEBEB;
+		border: 1px solid #ffbdbe;
+		padding: 4px;
+		border-radius: 3px;
+		display:none;
+	}
+	</style>
+</head>
+
+	
+<script type="text/javascript">
+$(document).ready(function(){
+	var a = getAll("11","22","10001","82ee7a9323f2233f385dfcf6845526eaa92ddd0310f3af80d6265c48cf83e2c581cad4d3ed9b756b0fb3ab871467cd01a8f3830b6b32de90f4878bc0f8fd6749","67");
+	alert(a.phone);
+	alert(a.pass);
+});
+</script>
+</html>

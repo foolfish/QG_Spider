@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IMobileTelDao" >
+
+  <select id="findById" resultType="com.lkb.bean.MobileTel" parameterType="String">
+    select * from t_mobiletel
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteMobileTel" parameterType="String" >
+    delete from t_mobiletel
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveMobileTel" parameterType="com.lkb.bean.MobileTel" >
+    insert into t_mobiletel (id,cTime,cName ,teleno,brand, dependCycle,cAllPay,cAllBalance,tcgdf, tcwdxf,tcwyytxf, tryf,ipgnctdx,sstgndq, 
+    dgddwl,jtyhtc,ipbdth, ipctth,ctth,bdth,myth,gndxtx,ydsjllqb,ydsjllsj,ydsj3y,iscm ,llzdsdb10,cl5,ldxsf,mgtjhyf,zzywf)
+    values (#{id,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, #{cName,jdbcType=VARCHAR}, #{teleno,jdbcType=VARCHAR},#{brand,jdbcType=VARCHAR},
+      #{dependCycle,jdbcType=VARCHAR}, #{cAllPay,jdbcType=DECIMAL},#{cAllBalance,jdbcType=DECIMAL},#{tcgdf,jdbcType=DECIMAL},#{tcwdxf,jdbcType=DECIMAL},#{tcwyytxf,jdbcType=DECIMAL},
+      #{tryf,jdbcType=DECIMAL},#{ipgnctdx,jdbcType=DECIMAL},#{sstgndq,jdbcType=DECIMAL},#{dgddwl,jdbcType=DECIMAL},#{jtyhtc,jdbcType=DECIMAL},#{ipbdth,jdbcType=DECIMAL},
+      #{ipctth,jdbcType=DECIMAL},#{ctth,jdbcType=DECIMAL},#{bdth,jdbcType=DECIMAL},#{myth,jdbcType=DECIMAL},#{gndxtx,jdbcType=DECIMAL},#{ydsjllqb,jdbcType=DECIMAL},
+      #{ydsjllsj,jdbcType=DECIMAL},#{ydsj3y,jdbcType=DECIMAL},#{iscm,jdbcType=INTEGER},#{llzdsdb10,jdbcType=DECIMAL},#{cl5,jdbcType=DECIMAL},#{ldxsf,jdbcType=DECIMAL},#{mgtjhyf,jdbcType=DECIMAL},#{zzywf,jdbcType=DECIMAL})
+  </insert>
+
+
+   <update id="update" parameterType="com.lkb.bean.MobileTel" >
+    update t_mobiletel   
+    <set > 
+     
+      <if test="cTime != null" >
+        cTime = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cName != null" >
+        cName = #{cName,jdbcType=VARCHAR},
+      </if>
+       <if test="teleno != null" >
+        teleno = #{teleno,jdbcType=VARCHAR},
+      </if>
+       <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+       <if test="dependCycle != null" >
+        dependCycle = #{dependCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="cAllPay != null" >
+        cAllPay = #{cAllPay,jdbcType=DECIMAL},
+      </if>   
+      <if test="cAllBalance != null" >
+        cAllBalance = #{cAllBalance,jdbcType=DECIMAL},
+      </if> 
+       <if test="tcgdf != null" >
+        tcgdf = #{tcgdf,jdbcType=DECIMAL},
+      </if> 
+       <if test="tcwdxf != null" >
+        tcwdxf = #{tcwdxf,jdbcType=DECIMAL},
+      </if> 
+       <if test="tcwyytxf != null" >
+        tcwyytxf = #{tcwyytxf,jdbcType=DECIMAL},
+      </if> 
+       <if test="tryf != null" >
+        tryf = #{tryf,jdbcType=DECIMAL},
+      </if> 
+       <if test="ipgnctdx != null" >
+        ipgnctdx = #{ipgnctdx,jdbcType=DECIMAL},
+      </if> 
+    <if test="sstgndq != null" >
+        sstgndq = #{sstgndq,jdbcType=DECIMAL},
+      </if> 
+       <if test="dgddwl != null" >
+        dgddwl = #{dgddwl,jdbcType=DECIMAL},
+      </if> 
+       <if test="jtyhtc != null" >
+        jtyhtc = #{jtyhtc,jdbcType=DECIMAL},
+      </if> 
+       <if test="ipbdth != null" >
+        ipbdth = #{ipbdth,jdbcType=DECIMAL},
+      </if>   
+  		<if test="ipctth != null" >
+        ipctth = #{ipctth,jdbcType=DECIMAL},
+      </if>  
+        <if test="ctth != null" >
+        ctth = #{ctth,jdbcType=DECIMAL},
+      </if>  
+        <if test="bdth != null" >
+        bdth = #{bdth,jdbcType=DECIMAL},
+      </if>  
+        <if test="myth != null" >
+        myth = #{myth,jdbcType=DECIMAL},
+      </if>  
+        <if test="gndxtx != null" >
+        gndxtx = #{gndxtx,jdbcType=DECIMAL},
+      </if>  
+	 <if test="ydsjllqb != null" >
+        ydsjllqb = #{ydsjllqb,jdbcType=DECIMAL},
+      </if> 
+       <if test="ydsjllsj != null" >
+        ydsjllsj = #{ydsjllsj,jdbcType=DECIMAL},
+      </if> 
+      <if test="ydsj3y != null" >
+        ydsj3y = #{ydsj3y,jdbcType=DECIMAL},
+      </if>
+       <if test="iscm != null" >
+        iscm = #{iscm,jdbcType=INTEGER},
+      </if> 
+      
+        <if test="llzdsdb10 != null" >
+        llzdsdb10 = #{llzdsdb10,jdbcType=DECIMAL},
+      </if> 
+      <if test="cl5 != null" >
+        cl5 = #{cl5,jdbcType=DECIMAL},
+      </if>
+       <if test="ldxsf != null" >
+        ldxsf = #{ldxsf,jdbcType=DECIMAL},
+      </if>
+       <if test="mgtjhyf != null" >
+        mgtjhyf = #{mgtjhyf,jdbcType=DECIMAL},
+      </if>
+      <if test="zzywf != null" >
+        zzywf = #{zzywf,jdbcType=DECIMAL},
+      </if>
+      
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getMobileTelBybc" parameterType="map" resultType="com.lkb.bean.MobileTel">
+ 	SELECT * FROM `t_mobiletel` t  WHERE t.teleno=#{phone} AND t.cTime=#{cTime}
+</select>
+ <select id="getMaxAccountTime" parameterType="com.lkb.bean.MobileTel" resultType="com.lkb.bean.MobileTel">
+ 	SELECT * FROM `t_mobiletel` t  WHERE t.teleno=#{teleno} order by t.cTime desc limit 1
+</select>
+ <select id="getMobileTelForReport1" parameterType="map" resultType="map">
+ 	select teleno,avg(cAllPay) as avg,min(cTime) as earlest, cAllBalance from `t_mobiletel` t where t.teleno=#{teleno}
+</select>
+ <select id="getMobileTels" parameterType="map" resultType="map">
+ 	select teleno,cAllPay,dependCycle from `t_mobiletel` t where t.teleno=#{teleno}
+</select>
+ 
+ <select id="getEveryAmount" parameterType="map" resultType="map">
+ SELECT SUM(cAllPay) AS amount FROM `t_mobiletel` WHERE  teleno in
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach> 
+ AND cTime LIKE  #{cTime} 
+</select>
+<select id="getMaxNumTel" parameterType="map" resultType="Date">
+ 	SELECT t.cTime FROM `t_mobiletel` t  WHERE t.teleno=#{teleno}  order by t.cTime desc limit 12
+</select>
+<select id="getFormatCtime" parameterType="String" resultType="map">
+ 	select DATE_FORMAT(t.ctime, '%Y%m') as time,t.callpay as callPay from `t_mobiletel` t where t.teleno = #{teleno} order by t.ctime desc
+</select>
+   
+  <insert id="insertbatch" parameterType="java.util.List">  
+    insert into `t_mobiletel` ( id,cTime,cName ,teleno,brand, dependCycle,cAllPay,cAllBalance,tcgdf, tcwdxf,tcwyytxf, tryf,ipgnctdx,sstgndq, 
+    dgddwl,jtyhtc,ipbdth, ipctth,ctth,bdth,myth,gndxtx,ydsjllqb,ydsjllsj,ydsj3y,iscm ,llzdsdb10,cl5,ldxsf,mgtjhyf,zzywf) values  
+    <foreach collection="list" item="mobiletel" index="index"  
+        separator=",">  
+        ( 
+     #{mobiletel.id,jdbcType=VARCHAR}, #{mobiletel.cTime,jdbcType=TIMESTAMP}, #{mobiletel.cName,jdbcType=VARCHAR}, #{mobiletel.teleno,jdbcType=VARCHAR},#{mobiletel.brand,jdbcType=VARCHAR},
+      #{mobiletel.dependCycle,jdbcType=VARCHAR}, #{mobiletel.cAllPay,jdbcType=DECIMAL},#{mobiletel.cAllBalance,jdbcType=DECIMAL},#{mobiletel.tcgdf,jdbcType=DECIMAL},#{mobiletel.tcwdxf,jdbcType=DECIMAL},#{mobiletel.tcwyytxf,jdbcType=DECIMAL},
+      #{mobiletel.tryf,jdbcType=DECIMAL},#{mobiletel.ipgnctdx,jdbcType=DECIMAL},#{mobiletel.sstgndq,jdbcType=DECIMAL},#{mobiletel.dgddwl,jdbcType=DECIMAL},#{mobiletel.jtyhtc,jdbcType=DECIMAL},#{mobiletel.ipbdth,jdbcType=DECIMAL},
+      #{mobiletel.ipctth,jdbcType=DECIMAL},#{mobiletel.ctth,jdbcType=DECIMAL},#{mobiletel.bdth,jdbcType=DECIMAL},#{mobiletel.myth,jdbcType=DECIMAL},#{mobiletel.gndxtx,jdbcType=DECIMAL},#{mobiletel.ydsjllqb,jdbcType=DECIMAL},
+      #{mobiletel.ydsjllsj,jdbcType=DECIMAL},#{mobiletel.ydsj3y,jdbcType=DECIMAL},#{mobiletel.iscm,jdbcType=INTEGER},#{mobiletel.llzdsdb10,jdbcType=DECIMAL},#{mobiletel.cl5,jdbcType=DECIMAL},#{mobiletel.ldxsf,jdbcType=DECIMAL},#{mobiletel.mgtjhyf,jdbcType=DECIMAL},#{mobiletel.zzywf,jdbcType=DECIMAL}
+     	)  
+    </foreach>  
+   </insert> 
+
+</mapper>

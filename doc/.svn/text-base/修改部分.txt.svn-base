@@ -1,0 +1,27 @@
+新增：
+/com/lkb/location/SH_Base.java
+/com/lkb/controller/yd/SHYIDONG_Controller.java
+/com/lkb/thirdUtil/yd/SHYidong.java
+注意：验证码是要按userId_sh.png这种命名规则来保存，并且按例子中的日期保存
+
+
+/LKB/WebContent/yd/sh_yd_Phone.jsp
+/resources/shyidong-141027 上海移动的安全证书(新增加的安全证书，后面按日期命名。这样可以知道哪些即将到期，到时候替换)
+
+修改：
+\resources\road.properties 
+新增上海移动的证书
+shyidong=E://LKB//code//\u5546\u884C//\u91CF\u5316\u5E73\u53F0//LKB//resources//yd//shyidong-141027
+shyidongpassword=123456
+
+entrancePhone.jsp新增上海移动，电信
+\src\com\lkb\thirdUtil\Phone_Base.java 增加上海的部分
+
+
+
+新增加字段。
+MobileTel.java
+private BigDecimal llzdsdb10 ;//  10元流量自动升档包
+private BigDecimal cl5 ;//  彩铃(5元)
+
+在MobileTelMapper.xml 里在增加和修改两个方法添加新字段。

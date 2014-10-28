@@ -1,0 +1,123 @@
+
+北京地区：
+
+http://www.189.cn/dqmh/UnifiedLogin.do?method=unifiedTicketCallBack&backUrl=http://www.189.cn
+http://www.189.cn/dqmh/login/phonelogin.jsp
+电信
+15321873159  801479
+13391869219 990822
+
+第一步：访问这个页面（生成验证码的页面）
+http://www.189.cn/dqmh/login/phonelogin.jsp
+http://www.189.cn/dqmh/createCheckCode.do?method=checkLoginCode&date=1397037959512
+
+第二步：验证验证码的真实性 
+http://www.189.cn/dqmh/createCheckCode.do?method=checkCheckCode&code=uxxb&number=15321873159
+
+第三步：开始登陆(服务密码：phonePwdType=01 动态密码 phonePwdType=04)
+服务密码链接：
+http://www.189.cn/dqmh/Uam.do?method=uamUnifiedLogin&uamType=phone&loginType=201  （post）
+userType=&backUrl=&cityCode=&loginType=201&phoneNumber=15321873159&phonePwdType=01&phonePassWord=801479&verificationCode=i1mr
+
+动态密码链接：
+http://www.189.cn/dqmh/Uam.do?method=uamUnifiedLogin&uamType=phone&loginType=201	
+userType=&backUrl=&cityCode=&loginType=201&phoneNumber=15321873159&phonePwdType=04&phonePassWord=2211&verificationCode=9gko
+
+如果返回的数据捕获到的Location不为空，说明登陆成功，否则登陆失败
+
+
+
+第四步：
+http://uam.bj.ct10000.com/scLogin?SSORequestXML=<?xml%20version="1.0"%20encoding="UTF-8"?><CAPRoot><SessionHeader><ServiceCode>CAP01002</ServiceCode><Version>1234567890123456</Version><ActionCode>0</ActionCode><TransactionID>01001201404091234567890</TransactionID><SrcSysID>01001</SrcSysID><DstSysID>01</DstSysID><ReqTime>20140409181244</ReqTime><DigitalSign%20/></SessionHeader><SessionBody><CT10000SSOAuthReq><RedirectURL>http%3A%2F%2Fwww.189.cn%2Fdqmh%2FUnifiedLogin.do%3Fmethod%3DunifiedTicketCallBack%26amp%3BloginType%3D201</RedirectURL><AuthInfo><AccountType>2000004</AccountType><AccountID>15321873159</AccountID><PWDType>01</PWDType><Password>801479</Password></AuthInfo></CT10000SSOAuthReq></SessionBody></CAPRoot>
+post:userType=&backUrl=&cityCode=&loginType=201&phoneNumber=15321873159&phonePwdType=01&phonePassWord=801479&verificationCode=i1mr
+
+第五步：
+http://www.189.cn/dqmh/UnifiedLogin.do?method=unifiedTicketCallBack&loginType=201&backUrl=http://www.189.cn&UATicket=3BC6892F989DF494287BF0B9CE39FCBA84F8D9B47C7E640E7EAF1039A2042F36
+psot:userType=&backUrl=&cityCode=&loginType=201&phoneNumber=15321873159&phonePwdType=01&phonePassWord=801479&verificationCode=i1mr
+
+
+其中第四，第五步都是根据上一步的Location获得的
+
+
+
+上海地区：
+18049985375 104117 
+18917768616 830607
+第一种：登陆不成功！！！他网站有问题
+第一步：访问登陆页面
+https://uam.sh.189.cn/uam/login
+
+第二部：获取验证码图片
+https://uam.sh.189.cn/uam/build/buildImage?a=0.2968133484813894
+
+第三步，将页面上的第一个form里面的input标签得到
+ <form id="2000004"
+ 把里面的input全部都得到
+
+form的action:https://uam.sh.189.cn/uam/login   post提交
+authtype=2000004&username=18917768616&customFileld01=1&password=830607&randomId=59&lt=_c7F424975-7A45-80F1-9F08-0908D5CB7240_k572C
+2050-B73E-C550-CA1F-3F7FAFAF6F9D&_eventId=submit&c=7
+
+authtype===2000004
+username===
+password===
+randomId===点击获取
+lt===_cDCE49D7E-FB46-A09D-107B-EF4221ADC512_k3B2770AD-86FA-2084-64B1-13DAB5F955A1
+_eventId===submit
+c===7
+
+
+第二种：
+
+
+
+forbidpass=null&forbidaccounts=null&authtype=c2000004&customFileld02=02&areaname=%E4%B8%8A%E6%B5%B7&username=18049985375&customFileld01=3&password=104117&randomId=8480&lt=_c1762577A-262F-2391-218F-A5B76A72954A_k564491F3-F0DD-CA6A-8ED3-95D64F2B90DB&_eventId=submit&open_no=c2000004
+
+
+第一步：访问登陆页面：
+https://uam.ct10000.com/ct10000uam/login?service=http://www.189.cn/dqmh/Uam.do?method=loginJTUamGet&returnURL=1&register=register2.0&UserIp=119.161.222.112
+获取需要的参数
+forbidpass=null
+&forbidaccounts=null
+&authtype=c2000004
+--&customFileld02=01
+--&areaname=%E5%8C%97%E4%BA%AC
+&username=18701683762
+&customFileld01=3
+&password=222232
+&randomId=7991
+&lt=_c1762577A-262F-2391-218F-A5B76A72954A_k0269A46E-C8F4-AB95-5C3B-19FE07150603
+&_eventId=submit
+&open_no=c2000004
+
+
+第二步，根据手机号，得到手机地址
+https://uam.ct10000.com/ct10000uam/FindPhoneAreaServlet
+username=18701683762
+返回：01|北京
+forbidpass=null&forbidaccounts=null&authtype=c2000004&customFileld02=01&areaname=%E5%8C%97%E4%BA%AC&username=18701683762&customFileld01=3&password=222232&randomId=7991&lt=_c1762577A-262F-2391-218F-A5B76A72954A_k0269A46E-C8F4-AB95-5C3B-19FE07150603&_eventId=submit&open_no=c2000004
+
+username=18049985375 104117 
+返回：02|上海
+https://uam.ct10000.com/ct10000uam/login?service=http://www.189.cn/dqmh/Uam.do?method=loginJTUamGet&returnURL=1&register=register2.0&UserIp=119.161.222.112
+
+第三步，访问验证码：
+
+https://uam.ct10000.com/ct10000uam/validateImg.jsp
+
+第四步：登陆
+（1）https://uam.ct10000.com/ct10000uam/login?service=http://www.189.cn/dqmh/Uam.do?method=loginJTUamGet&returnURL=1&register=register2.0&UserIp=119.161.222.112
+参数：forbidpass=null&forbidaccounts=null&authtype=c2000004&customFileld02=02&areaname=%E4%B8%8A%E6%B5%B7&username=18049985375&customFileld01=3&password=104117&randomId=0780&lt=_cCF40A26B-88A2-DD63-CB22-1FA0F2D66F5A_k65790A50-F3E4-E035-8F48-D9C2E126BF0D&_eventId=submit&open_no=c2000004
+返回的Location:
+Location	https://uam.ct10000.com:443/ct10000uam-gate/?SSORequestXMLRETURN=http://www.189.cn/dqmh/Uam.do?method=loginJTUamGet&UATicket=35nullST--2371605-OT5pBdZ5sk09bdwFD1FJ-ct10000uam
+
+（2）http://www.189.cn/dqmh/Uam.do?method=loginJTUamGet&UATicket=35nullST--2371605-OT5pBdZ5sk09bdwFD1FJ-ct10000uam
+参数：forbidpass=null&forbidaccounts=null&authtype=c2000004&customFileld02=02&areaname=%E4%B8%8A%E6%B5%B7&username=18049985375&customFileld01=3&password=104117&randomId=0780&lt=_cCF40A26B-88A2-DD63-CB22-1FA0F2D66F5A_k65790A50-F3E4-E035-8F48-D9C2E126BF0D&_eventId=submit&open_no=c2000004
+
+（3）http://www.189.cn/dqmh/Uam.do?method=loginJTUamGet&UATicket=35nullST--2371605-OT5pBdZ5sk09bdwFD1FJ-ct10000uam
+这步查看 cookie的isLogin是否是logined也可以看出是不是登陆成功了
+
+（4）http://www.189.cn/ 测试一下登录成功没
+
+
+ src="/ct10000uam/validateImg.jsp?0.738532064836174">

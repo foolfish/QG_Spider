@@ -1,0 +1,19 @@
+﻿	/* 用户登录 pjk */
+	.register-protocol {height: 30px; line-height: 30px; margin-top: 5px;}
+	.register-protocol input {float: left; margin-right: 5px; margin-top: 8px; vertical-align: -2px;}
+	.register-protocol span {float: left;}
+	.register .register-messagebtn {height: 38px; margin-left: 10px; width: 100px;}
+	.register-form-checkimglab, .register-form-changelab {float: left; height: 38px; line-height: 38px; margin-left: 15px; font-size: 12px;}
+	.register-form-changelab {color: #666;}
+	.register-form-checkimglab img {cursor: pointer; width: 100px; height: 38px;}
+	.register-form-submit {padding-top: 15px;margin: 12px 0 38px 0;}
+	.register-form-submit input {width: 289px; height: 36px;}
+
+	/* 弹框内容样式 pjk */
+	.register-modal {position: fixed; left: 50%; top: 50px; z-index: 20; height: 512px; width: 800px; background-color: #fff}
+	.register-modal h1 {height: 48px; padding-left: 20px; line-height: 48px; background: #00b5ef; font-size: 16px; color: #fff;}
+	.register-modal-control {height: 94px;}
+	.register-modal-control div {width: 740px; height: 100%; margin: 0 auto;border-top: 1px solid #dcdcdc;text-align: center;}
+	.register-modal-btn {width: 114px; height: 36px; margin-top: 24px; color: #fff; font-size: 16px; cursor: pointer;}
+	.register-ok {background: #00a4d9; border: 1px solid #00a4d9;}
+	.register-back {background: #d8d8d8; border: 1px solid #d8d8d8; margin-left: 30px;}

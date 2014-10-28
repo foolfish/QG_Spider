@@ -1,0 +1,27 @@
+http://blog.csdn.net/onetoneom/article/details/7942053
+http://zhaoshijie.iteye.com/blog/804788
+
+
+网易163邮箱
+新浪邮箱
+搜狐邮箱
+TOM邮箱
+
+网易126邮箱
+        receiverInfo.setMailServerHost("pop.126.com"); 
+        receiverInfo.setMailServerPort("110"); 
+        receiverInfo.setValidate(true); 
+        receiverInfo.setUserName("zhaoyulong0626");//即：@符号前面的部分
+        receiverInfo.setPassword("chaoren0626");
+139手机邮箱
+Gmail	
+Hotmail
+
+可以登录的邮箱
+@21CN.com                    pop.21cn.com   110
+@Yeah.net        pop.yeah.net   110
+@139.com                     pop.139.com    110
+@163.com                     pop.163.com	110
+@sohu.com			pop.sohu.com  110
+@126.com                    pop.126.com    110
+

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IUnicomFlowDao">
+
+	<select id="findById" resultType="com.lkb.bean.UnicomFlow"
+		parameterType="String">
+		select * from t_unicomflow
+		where id = #{id}
+	</select>
+
+	<delete id="delete" parameterType="String">
+		delete from t_unicomflow
+		where
+		id = #{id}
+	</delete>
+
+
+	<insert id="save" parameterType="com.lkb.bean.UnicomFlow">
+		insert into t_unicomflow (id,
+		startTime, tradeType, tradeAddr, allFlow
+		,allPay, phone, createTs)
+		values (#{id,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP},
+		#{tradeType,jdbcType=VARCHAR},
+		#{tradeAddr,jdbcType=VARCHAR},#{allFlow,jdbcType=DECIMAL},#{allPay,jdbcType=DECIMAL},
+		#{phone,jdbcType=VARCHAR}, #{createTs,jdbcType=TIMESTAMP})
+	</insert>
+
+
+	<update id="update" parameterType="com.lkb.bean.UnicomFlow">
+		update t_unicomflow
+		<set>
+
+			<if test="tradeType != null">
+				tradeType = #{tradeType,jdbcType=VARCHAR},
+			</if>
+			<if test="startTime != null">
+				cTime = #{startTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="tradeAddr != null">
+				tradeAddr = #{tradeAddr,jdbcType=VARCHAR },
+			</if>
+			<if test="allFlow != null">
+				allFlow = #{allFlow,jdbcType=DECIMAL},
+			</if>
+			<if test="allPay != null">
+				allPay = #{allPay,jdbcType=DECIMAL },
+			</if>
+			<if test="phone != null">
+				phone = #{phone,jdbcType=VARCHAR },
+			</if>
+			<if test="createTs != null">
+				iscm = #{createTs,jdbcType=TIMESTAMP },
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+
+
+	<select id="getUnicomFlowForReport" parameterType="String" resultType="map">
+		select  t.startTime as cTime,'' as tradeTime,t.allFlow as flow,t.tradeAddr as tradeAddr,t.tradeType as netType,t.allPay as fee from `t_unicomflow` t WHERE t.phone=#{phone} ;
+	</select>
+	<select id="getByPhone" parameterType="map" resultType="com.lkb.bean.UnicomFlow">
+		SELECT *
+		FROM `t_unicomflow` t WHERE t.phone=#{phone} AND
+		t.startTime=#{startTime}
+	</select>
+	<select id="getMaxStartTime" parameterType="String"
+		resultType="com.lkb.bean.UnicomFlow">
+		SELECT * FROM `t_unicomflow` t WHERE t.phone=#{phone} order
+		by startTime
+		desc limit 1
+	</select>
+	<select id="getListByPhone" parameterType="String" resultType="map">
+		SELECT t.startTime, t.tradeAddr,t.tradetype as tradeway from
+		`t_unicomflow` t WHERE t.phone=#{phone} order by starttime desc
+	</select>
+
+	<select id="getUnicomFlowForReport2" parameterType="map"
+		resultType="map">
+		select max(startTime) as latest from `t_unicomflow` t where
+		t.phone=#{phone};
+	</select>
+
+	<select id="getList" parameterType="String" resultType="map">
+		SELECT
+		startTime, tradeType, tradeAddr, allFlow, allPay, phone from
+		`t_unicomflow` t WHERE t.phone=#{phone}
+	</select>
+
+	<insert id="insertbatch" parameterType="java.util.List">
+		insert into t_unicomflow ( id, startTime, tradeType,tradeAddr,
+		allFlow,allPay, phone, createTs) values
+		<foreach collection="list" item="UnicomFlow" index="index"
+			separator=",">
+			(
+			#{UnicomFlow.id,jdbcType=VARCHAR},
+			#{UnicomFlow.startTime,jdbcType=TIMESTAMP},
+			#{UnicomFlow.tradeType,jdbcType=VARCHAR},
+			#{UnicomFlow.tradeAddr,jdbcType=VARCHAR},
+			#{UnicomFlow.allFlow,jdbcType=DECIMAL},
+			#{UnicomFlow.allPay,jdbcType=DECIMAL},
+			#{UnicomFlow.phone,jdbcType=VARCHAR},
+			#{UnicomFlow.createTs,jdbcType=TIMESTAMP}
+			)
+		</foreach>
+	</insert>
+
+</mapper>

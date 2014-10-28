@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IOTCityDao" >
+
+  <select id="get" resultType="com.lkb.bean.OTCity" parameterType="Integer">
+    select * from t_ot_city
+    where id = #{id}
+  </select>
+  
+  <select id="getAll" resultType="list"  >
+   	select * from t_ot_city
+  </select>
+  <select id="getObjByType" resultType="list" parameterType="Integer" >
+   	select * from t_ot_city where type=#{type}
+  </select>
+  
+
+     <select id="getObjByName" resultType="com.lkb.bean.OTCity" parameterType="map">
+    select * from t_ot_city where name like #{name}
+  </select>
+  
+  
+  
+	
+  <insert id="save" parameterType="com.lkb.bean.OTCity" >
+    insert into t_ot_city ( name,type)
+    values (  #{name,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER})
+  </insert>
+	
+
+		
+		
+</mapper>

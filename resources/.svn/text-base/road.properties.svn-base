@@ -1,0 +1,9 @@
+imgPath=/img/authcode/
+authcodePath=D:/server/apache-tomcat-7.0.35/webapps/LKB1/img/authcode/
+
+tomcatWebappPath=D:/server/apache-tomcat-7.0.35/webapps/LKB1
+islinux=false
+
+server.full.path=http://localhost:8080/LKB
+server.img.auth.code.suffix=.html
+imgDomain=http://localhost:8080/LKB/

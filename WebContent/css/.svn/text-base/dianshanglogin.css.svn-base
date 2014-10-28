@@ -1,0 +1,8 @@
+	/* 电商登录 pjk */
+	.dianshang-form-success {display: none;}
+	.dianshang-form-success p {width: 286px; margin-left: 130px; text-align: center;}
+	.dianshang-form-success p  span {text-align: center;}
+	.dianshang-logined .dianshang-pice  {display: none;}
+	.dianshang-logined .dianshang-form-success {display: block;}
+	.dianshang-console {color: red;}
+	.dianshang-title2 {margin-top: 90px;}

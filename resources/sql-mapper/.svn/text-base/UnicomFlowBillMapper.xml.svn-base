@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IUnicomFlowBillDao" >
+
+  <select id="findById" resultType="com.lkb.bean.UnicomFlowBill" parameterType="String">
+    select * from t_unicomflowbill
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteUnicomflowbill" parameterType="String" >
+    delete from t_unicomflowbill
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveUnicomFlowBill" parameterType="com.lkb.bean.UnicomFlowBill" >
+    insert into t_unicomflowbill (id,cTime,cName ,teleno,dependCycle, cAllFlow ,cAllPay,iscm)
+    values (#{id,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, #{cName,jdbcType=VARCHAR}, #{teleno,jdbcType=VARCHAR},
+      #{dependCycle,jdbcType=VARCHAR}, #{cAllFlow,jdbcType=DECIMAL},
+      #{cAllPay,jdbcType=DECIMAL},#{iscm,jdbcType=INTEGER})
+  </insert>
+
+   <update id="update" parameterType="com.lkb.bean.UnicomFlowBill" >
+    update t_unicomflowbill   
+    <set > 
+    
+      <if test="cTime != null" >
+        cTime = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cName != null" >
+        cName = #{cName,jdbcType=VARCHAR},
+      </if>
+       <if test="teleno != null" >
+        teleno = #{teleno,jdbcType=VARCHAR},
+      </if>
+       <if test="dependCycle != null" >
+        dependCycle = #{dependCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="cAllFlow != null">
+      	cAllFlow = #{cAllFlow,jdbcType=DECIMAL},
+      </if>
+      <if test="cAllPay != null" >
+        cAllPay = #{cAllPay,jdbcType=DECIMAL},
+      </if>   
+       <if test="iscm != null" >
+        iscm = #{iscm,jdbcType=INTEGER},
+      </if> 
+      
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getUnicomFlowBillBybc" parameterType="map" resultType="com.lkb.bean.UnicomFlowBill">
+ 	SELECT * FROM `t_unicomflowbill` t  WHERE  t.cTime=#{cTime}
+ 	 <if test="teleno != null" >
+      AND  teleno = #{teleno}
+      </if> 
+</select>
+
+
+ <select id="getUnicomFlowBillForReport1" parameterType="map" resultType="map">
+ 	select teleno,avg(cAllPay) as avg,min(cTime) as earlest  from `t_unicomflowbill` t where t.teleno=#{teleno}
+</select>
+<!-- 姜宗仁添加     报告使用《details phoneDetail》 -->
+<select id="getUnicomFlowBillForReport" parameterType="String" resultType="map">
+ 	select cTime as time ,cAllFlow as allFlow, '' as allTime,cAllPay as allPay  from `t_unicomflowbill` t where t.teleno=#{teleno}
+</select>
+<!-- 姜宗仁添加     报告使用《details phoneDetail》 -->
+<select id="getEveryAmount" parameterType="map" resultType="map">
+ SELECT SUM(cAllPay) AS amount FROM  `t_unicomflowbill` WHERE  teleno in  
+  <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach> 
+ AND cTime LIKE  #{cTime} 
+</select>
+ <select id="getMaxAccountTime" parameterType="com.lkb.bean.UnicomFlowBill" resultType="com.lkb.bean.UnicomFlowBill">
+ 	SELECT * FROM `t_unicomflowbill` t  WHERE t.teleno=#{teleno} order by t.cTime desc limit 1
+</select>
+ <select id="getMaxNumTel" parameterType="map" resultType="Date">
+ 	SELECT t.cTime FROM `t_unicomflowbill` t  WHERE t.teleno=#{teleno} order by t.cTime desc limit 12
+</select>
+
+<select id="getFormatCtime" parameterType="String" resultType="map">
+select DATE_FORMAT(t.ctime, '%Y%m') as time,t.Allpay from `t_unicomflowbill` t where t.teleno = #{teleno} order by t.ctime desc
+</select>
+  
+   <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_unicomflowbill ( id,cTime,cName ,teleno,dependCycle, cAllPay,cAllFlow,iscm) values  
+    <foreach collection="list" item="unicomflowbill" index="index"  
+        separator=",">  
+        ( 
+	  #{unicomflowbill.id,jdbcType=VARCHAR}, #{unicomflowbill.cTime,jdbcType=TIMESTAMP}, 
+	  #{unicomflowbill.cName,jdbcType=VARCHAR}, #{unicomflowbill.flowbilleno,jdbcType=VARCHAR},
+      #{unicomflowbill.dependCycle,jdbcType=VARCHAR}, #{unicomflowbill.cAllPay,jdbcType=DECIMAL},
+  	  #{unicomflowbill.cAllFlow,jdbcType=DECIMAL}, #{unicomflowbill.iscm,jdbcType=INTEGER}
+     	)  
+    </foreach>  
+   </insert> 
+
+</mapper>

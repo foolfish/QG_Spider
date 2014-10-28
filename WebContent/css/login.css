@@ -1,0 +1,11 @@
+	/* 登录页面 pjk */
+	.login {width: 386px; padding-bottom: 23px;}
+	.login-title {padding-bottom: 20px; font-size: 20px; font-family: "微软雅黑";}
+	.login-form-control {float: left; margin-left: 80px; width: 289px;line-height: 14px; text-align: right; font-size: 12px;}
+	.login-form-error {float: left;padding-left: 2px;}
+	.login-form-submit {padding-top: 15px;}
+	.login-form-submit input {width: 289px; height: 36px; background: #00a4d9; border: 1px solid #00a4d9; color: #fff; font-size: 16px; cursor: pointer;vertical-align: middle;}
+	.login-fieldset {padding-left: 80px;}
+	.login-fieldset-title {width: 80px; margin-left: -80px;}
+	.login-foot {margin-right: 50px; padding: 5px 0; font-size: 12px; text-align: right;}
+	.login-foot span {margin-right: 10px;}

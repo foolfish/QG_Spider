@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IUnicomMessageDao" >
+
+  <select id="findById" resultType="com.lkb.bean.UnicomMessage" parameterType="String">
+    select * from t_unicommessage
+    where id = #{id}
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from t_unicommessage
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="save" parameterType="com.lkb.bean.UnicomMessage" >
+    insert into t_unicommessage (id, sentTime, tradeType,recevierPhone, allPay, phone, createTs)
+    values (#{id,jdbcType=VARCHAR},#{sentTime,jdbcType=TIMESTAMP}, #{tradeType,jdbcType=VARCHAR}, #{recevierPhone,jdbcType=VARCHAR},
+      #{allPay,jdbcType=DECIMAL},  #{phone,jdbcType=VARCHAR}, #{createTs,jdbcType=TIMESTAMP})
+  </insert>
+  
+
+	
+ 
+   <update id="update" parameterType="com.lkb.bean.UnicomMessage" >
+    update t_unicommessage   
+    <set > 
+    
+     <if test="tradeType != null" >
+        tradeType = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="sentTime != null" >
+        cTime = #{sentTime,jdbcType=TIMESTAMP},
+      </if>     
+       <if test="recevierPhone != null" >
+        recevierPhone = #{recevierPhone,jdbcType=VARCHAR },
+      </if>
+     
+      <if test="allPay != null" >
+        allPay = #{allPay,jdbcType=DECIMAL },
+      </if>
+         <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR },
+      </if>
+         <if test="createTs != null" >
+        iscm = #{createTs,jdbcType=TIMESTAMP },
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getByPhone" parameterType="map" resultType="com.lkb.bean.UnicomMessage">
+ 	SELECT * FROM `t_unicommessage` t  WHERE t.phone=#{phone} AND t.sentTime=#{sentTime}
+</select>
+ <select id="getMaxSentTime" parameterType="String" resultType="com.lkb.bean.UnicomMessage">
+ 	SELECT * FROM `t_unicommessage` t  WHERE t.phone=#{phone} order by sentTime desc limit 1
+</select>
+ <select id="getListByPhone" parameterType="String" resultType="map">
+ 	SELECT t.sentTime, t.recevierPhone as receiverPhone,t.tradetype as tradeWay from `t_unicommessage` t   WHERE t.phone=#{phone} order by senttime desc
+</select>
+
+ <select id="getUnicomMessageForReport" parameterType="map" resultType="map">
+ 	select  recevierPhone,count(id) as num from
+ 	`t_unicommessage` t  WHERE t.phone=#{phone}  group by t.recevierPhone order by t.recevierPhone;
+</select>
+ <select id="getUnicomMessageForReport2" parameterType="map" resultType="map">
+ select max(sentTime) as latest from `t_unicommessage` t  where t.phone=#{phone};
+</select>
+
+ <select id="getList" parameterType="String" resultType="map">
+ 	SELECT sentTime, tradeType,recevierPhone, allPay, phone from `t_unicommessage` t   WHERE t.phone=#{phone}
+</select>
+
+  <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_unicommessage ( id, sentTime, tradeType,recevierPhone, allPay, phone, createTs) values  
+    <foreach collection="list" item="UnicomMessage" index="index"  
+        separator=",">  
+        ( 
+      #{UnicomMessage.id,jdbcType=VARCHAR},#{UnicomMessage.sentTime,jdbcType=TIMESTAMP}, #{UnicomMessage.tradeType,jdbcType=VARCHAR}, #{UnicomMessage.recevierPhone,jdbcType=VARCHAR},
+      #{UnicomMessage.allPay,jdbcType=DECIMAL},  #{UnicomMessage.phone,jdbcType=VARCHAR}, #{UnicomMessage.createTs,jdbcType=TIMESTAMP}
+     	)  
+    </foreach>  
+   </insert> 
+      
+</mapper>

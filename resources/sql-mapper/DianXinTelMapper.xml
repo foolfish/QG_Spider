@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IDianXinTelDao" >
+
+  <select id="findById" resultType="com.lkb.bean.DianXinTel" parameterType="String">
+    select * from t_dianxintel
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteDianXinTel" parameterType="String" >
+    delete from t_dianxintel
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveDianXinTel" parameterType="com.lkb.bean.DianXinTel" >
+    insert into t_dianxintel (id,cTime,cName ,teleno,brand, dependCycle,cAllPay,ztcjbf,bdthf,ldxsf,mythf)
+    values (#{id,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, #{cName,jdbcType=VARCHAR}, #{teleno,jdbcType=VARCHAR},#{brand,jdbcType=VARCHAR},
+      #{dependCycle,jdbcType=VARCHAR}, #{cAllPay,jdbcType=DECIMAL}, #{ztcjbf,jdbcType=DECIMAL}, #{bdthf,jdbcType=DECIMAL}, #{ldxsf,jdbcType=DECIMAL}, #{mythf,jdbcType=DECIMAL})
+  </insert>
+
+  
+   <update id="update" parameterType="com.lkb.bean.DianXinTel" >
+    update t_dianxintel   
+    <set > 
+    
+      <if test="cTime != null" >
+        cTime = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cName != null" >
+        cName = #{cName,jdbcType=VARCHAR},
+      </if>
+       <if test="teleno != null" >
+        teleno = #{teleno,jdbcType=VARCHAR},
+      </if>
+       <if test="brand != null" >
+        brand = #{brand,jdbcType=VARCHAR},
+      </if>
+       <if test="dependCycle != null" >
+        dependCycle = #{dependCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="cAllPay != null" >
+        cAllPay = #{cAllPay,jdbcType=DECIMAL},
+      </if>   
+      <if test="ztcjbf != null" >
+        ztcjbf = #{ztcjbf,jdbcType=DECIMAL},
+      </if> 
+      <if test="bdthf != null" >
+        bdthf = #{bdthf,jdbcType=DECIMAL},
+      </if> 
+        <if test="ldxsf != null" >
+        ldxsf = #{ldxsf,jdbcType=DECIMAL},
+      </if> 
+        <if test="mythf != null" >
+        mythf = #{mythf,jdbcType=DECIMAL},
+      </if> 
+      
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getDianXinTelBybc" parameterType="map" resultType="com.lkb.bean.DianXinTel">
+ 	SELECT * FROM `t_dianxintel` t  WHERE t.teleno=#{teleno} AND t.cTime=#{cTime}
+</select>
+<select id="getDianXinTelForReport1" parameterType="map" resultType="map">
+ 	select teleno,avg(cAllPay) as avg,min(cTime) as earlest  from `t_dianxintel` t where t.teleno=#{teleno}
+</select>
+ <select id="getEveryAmount" parameterType="map" resultType="map">
+ SELECT SUM(cAllPay) AS amount FROM  `t_dianxintel` WHERE teleno in 
+  <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach> 
+ AND cTime LIKE  #{cTime} 
+</select>
+<select id="getMaxAccountTime" parameterType="com.lkb.bean.DianXinTel" resultType="com.lkb.bean.DianXinTel">
+ 	SELECT * FROM `t_dianxintel` t  WHERE t.teleno=#{teleno}  order by t.cTime desc limit 1
+</select>
+<select id="getMaxNumTel" parameterType="map" resultType="Date">
+ 	SELECT t.cTime as ctime FROM `t_dianxintel` t  WHERE t.teleno=#{teleno}  order by t.cTime desc limit 12
+</select>
+<select id="getFormatCtime" parameterType="String" resultType="map">
+ 	select DATE_FORMAT(t.ctime, '%Y%m') as time,t.callpay as callPay from `t_dianxintel` t where t.teleno =#{teleno} order by t.ctime desc
+</select>
+
+   <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_dianxintel ( id,cTime,cName ,teleno,brand, dependCycle,cAllPay,ztcjbf,bdthf,ldxsf,mythf) values  
+    <foreach collection="list" item="dianxintel" index="index"  
+        separator=",">  
+        ( 
+      #{dianxintel.id,jdbcType=VARCHAR},#{dianxintel.cTime,jdbcType=TIMESTAMP}, #{dianxintel.cName,jdbcType=VARCHAR}, #{dianxintel.teleno,jdbcType=VARCHAR},#{dianxintel.brand,jdbcType=VARCHAR},
+      #{dianxintel.dependCycle,jdbcType=VARCHAR}, #{dianxintel.cAllPay,jdbcType=DECIMAL}, #{dianxintel.ztcjbf,jdbcType=DECIMAL}, #{dianxintel.bdthf,jdbcType=DECIMAL}, #{dianxintel.ldxsf,jdbcType=DECIMAL}, #{dianxintel.mythf,jdbcType=DECIMAL}
+     	)  
+    </foreach>  
+   </insert> 
+
+
+</mapper>

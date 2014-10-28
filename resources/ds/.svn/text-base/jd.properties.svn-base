@@ -1,0 +1,25 @@
+uuid=input[id=uuid]
+randomroad=label.ftx24
+machineNetroad=input[name=machineNet]
+machineCpuroad=input[name=machineCpu]
+machineDiskroad=input[name=machineDisk]
+tbody=tbody
+a=a
+id=id
+td=td
+nickName=input[id=nickName]
+realName=input[id=realName]
+address=input[id=address]
+order02=div[id=order02]
+mc=div[class=mc]
+tcol1=span[class=tcol1]
+href=href
+pD1=div[class=pD1]
+marginb10=table[class=table_a marginb10]
+tr=tr
+breadcrumb=div[class=breadcrumb]
+strong=strong
+orderinfo=div[id=orderinfo]
+dl=dl
+li=li
+list=dd[class=p-list]

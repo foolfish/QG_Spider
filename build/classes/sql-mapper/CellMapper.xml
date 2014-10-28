@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.ICellDao" >
+
+  <select id="findById" resultType="com.lkb.bean.Cells" parameterType="String">
+    select * from t_cell
+    where phone = #{phone}
+  </select>
+  
+  <delete id="deleteCell" parameterType="String" >
+    delete from t_cell
+    where phone = #{phone}
+  </delete>
+
+  <select id="findByBaby" resultType="com.lkb.bean.Cells" parameterType="String">
+    select * from t_cell
+    where baby = #{baby}
+  </select>
+	
+	<select id="getCells" resultType="com.lkb.bean.Cells" >
+    select * from t_cell order by cTime
+  </select>
+  
+  <insert id="saveCell" parameterType="com.lkb.bean.Cells" >
+    insert into t_cell (phone, lable, age,sex, income, baby, xq, domain, keyword, cTime)
+    values ( #{phone,jdbcType=VARCHAR},  #{lable,jdbcType=VARCHAR}, #{age,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{income,jdbcType=VARCHAR},  #{baby,jdbcType=VARCHAR}, 
+     #{xq,jdbcType=VARCHAR},  #{domain,jdbcType=VARCHAR},  #{keyword,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP})
+  </insert>
+	
+ <select id="getlable" resultType="map">
+ SELECT distinct(t.lable) as lable FROM `t_cell` t
+</select>
+ <select id="getAge"  resultType="map">
+ SELECT distinct(t.age) as age FROM `t_cell` t
+</select>
+ <select id="getSex"  resultType="map">
+ SELECT distinct(t.sex) as sex FROM `t_cell` t
+</select>
+ <select id="getIncome" resultType="map">
+ SELECT distinct(income) as income FROM `t_cell` t
+</select>
+ <select id="getBaby"  resultType="map">
+ SELECT distinct(baby) FROM `t_cell` t
+</select>
+
+ <select id="getXq" resultType="map">
+ SELECT distinct(xq) FROM `t_cell` t
+</select>
+
+ <select id="getDomain"  resultType="map">
+ SELECT distinct(domain) FROM `t_cell` t
+</select>
+
+ <select id="getKeyword"  resultType="map">
+ SELECT distinct(keyword) FROM `t_cell` t
+</select>
+
+   <update id="update" parameterType="com.lkb.bean.Cells" >
+    update t_cell
+    <set > 
+       <if test="lable != null" >
+        lable = #{lable,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="income != null" >
+        income = #{income,jdbcType=VARCHAR},
+      </if>
+		<if test="baby != null" >
+        baby = #{baby,jdbcType=VARCHAR},
+      </if>
+      	<if test="xq != null" >
+        xq = #{xq,jdbcType=VARCHAR},
+      </if>
+      	<if test="domain != null" >
+        domain = #{domain,jdbcType=VARCHAR},
+      </if>
+      	<if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      	<if test="cTime != null" >
+        cTime =#{cTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where phone = #{phone,jdbcType=VARCHAR}
+  </update>
+		
+</mapper>

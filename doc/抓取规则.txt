@@ -1,0 +1,126 @@
+中国移动入口：https://bj.ac.10086.cn/login
+中国电信入口：http://www.189.cn/dqmh/login/loginJT.jsp  选择“电信用户登录”
+
+
+
+业务场景：
+用户在申请贷款之前，会先进入我们网站，填入自己的手机号，就会跳转到相应的页面，然后填写用户名密码（有些需要验证码和动态密码），程序模拟登陆过程，登陆不通过，页面上面提示用户名密码错误，如果登陆通过，就开始抓取。
+
+需求：
+（1）抓取 移动 电信 运营商的数据（不包括联通）
+要点如下：
+模拟登陆，会员中心信息收集：会员基本信息，6个月内的话费记录，6个月内的通话记录。（在给的例子中，中国电信上海站只能取到通话记录，其他都很正常）
+（2）使用我给的模板。我已经建好了表和数据库，直接套就行。如果新的网站，有新字段的话，还请添加，告知我一下，因为一个部分改了，其他人都必须改。
+用户基本信息：com.lkb.bean.User 
+移动6个月内话费记录：com.lkb.bean.MobileTel
+移动6个月内通话记录：com.lkb.bean.MobileDetail
+
+电信6个月内话费记录：com.lkb.bean.UnicomTel
+电信6个月内通话记录：com.lkb.bean.UnicomDetail
+
+
+（3）请按照给的模板，将抓取的页面弄成配置文件的方式
+（4）对需要分析的页面进行报警设置。在一个页面外围加一个try catch,增加报警系统。具体如何增加请参考移动例子。报警名称需要自己写下，目的是为了区分哪个页面出问题了。
+报警只需在catch模块增加以下三句话即可：（其中warnType 需要自己定义）
+			String warnType = WaringConstaint.YD_1;
+			WarningUtil wutil = new WarningUtil();
+			wutil.warning(warningService, currentUser, warnType);
+
+（5）有任何其他问题请及时问我，确保项目质量和进度。
+（6）第一版的代码质量如果不错，后面任务还有几百个，可建立长期联系。
+（7）使用技术：java的httpclient4.3，后面详单抓取这种尽量做成多线程，可以按照移动作为例子
+（8）写完之后，请写一份代码的路径，我好合版本，谢啦。
+（9）写完第一个例子，请先提交过来，我看下有没问题，再开发第二个，以防后面写错
+
+请在新加项目前，先看一下整个流程，以及写好的上海电信，移动的代码，里面有写好的组件，可以直接拿来使用
+
+注册入口：http://localhost:8080/LKB/lg/register.html
+登陆入口：http://localhost:8080/LKB/lg/login.html
+进入之后，填写用户基本信息。然后输入电话号码的地方输入你自己的测试号码，前面打勾，点击”下一步“
+输入正确的用户名，密码，正确抓取；输入错误的用户名密码，如果网站没出现验证码，则继续输入；
+如果网站出现验证码，需要下载下来，并显示到前端页面；
+用户点击验证码，可以变化；
+
+
+初始化的工作：
+（1）数据库名称com_lkb  密码123456 utf-8编码  mysql版本需要是5.5.X，5.6版本对时间兼容性不好。
+数据库文件在sql文件夹下面，两个文件都要执行
+（2）road.properties里面的路径，请修改成自己的路径
+
+
+
+
+关于命名规则：
+假如北京 BJYidong  BJLiantong BJDianxin
+请注意在写controller时，新方法的命名规则，加上所在省的简拼，/fuwu_sh_liantong_parseBegin,诸如此类
+
+
+
+关于文件新加路径：
+（1）conrtoller部分
+移动所在包 com.lkb.controller.yd
+联通所在包 com.lkb.controller.lt
+电信所在包 com.lkb.controller.dx
+（2）thirdutil部分
+移动所在包 com.lkb.thirdUtil.yd
+联通所在包 com.lkb.thirdUtil.lt
+电信所在包 com.lkb.thirdUtil.dx
+
+关于用户 user
+关于电信：dianxinTelService  dianxinDetailService
+关于移动：mobileTelService  mobileDetailService
+关于联通：unicomTelService  unicomDetailService
+
+
+
+
+另外，我写的代码肯定是有瑕疵的，哪里不好，请提出。另外填写手机号密码的那个页面，如果可以增加多个手机号，请帮我思考一下如何使用js .
+有什么不明白的地方请及时问我。
+
+httpclient参考学习的网站：
+http://blog.csdn.net/chaoren0626/article/details/23794927
+http://hi.baidu.com/erliang20088
+
+
+写中国移动的思路（很多东西都是模块化的，请注意分门别类的放置，注意代码质量）
+（1）先写main方法，把模拟登陆和各个模块抓取都走通了，剩下就是套了
+（2）首先看BaseController.java，里面有一个entrancePhone的方法，这个方法里面引用了一个Phone_Base类，假设你要新添加省份，就在这个类里面去添加。照着上海的规则改就行，你需要新建如 BJ_Base这种去调用
+（3）上一步的目的是创建一个httpclient，然后去连相应网站，看看需不需要验证码，如果需要的话，返回一个验证码的链接，此步的话，就到了具体的jsp页面。直接进到了entrancePhone.jsp ，你会发现不一样的参数返回的地址不一样。引用的页面命名规则是：运营商/地址_运营商_Phone.jsp
+（4）然后进到具体的页面执行不同的操作。这时，你需要新建一个新的controller和第三方帮助类。
+电信的话，放在com.lkb.controller.dx下面，按地址命名；移动的话，放在com.lkb.controller.yd下面，按地址命名
+帮助类：com.lkb.thirdUtil.dx 和 com.lkb.thirdUtil.yd下面
+（5）最后抓取完成后，需要在DxShutDown.java，YdShutDown.java里删除相应存储链接的map，并且把当前的httpclient关闭
+
+一个用户有一个基本信息，6条话费数据信息（最近6个月），几条到百条通话详单信息
+数据库和bean里面的类都是一一对应的
+
+会员表：t_user
+
+--电信手机话费数据
+t_dianxintel 
+ --电信话费详单
+t_dianxindetail 
+
+--中国联通手机话费数据
+t_unicomtel 
+--联通话费详单
+t_unicomdetail
+
+--中国移动手机话费数据
+ t_mobiletel 
+--移动话费详单
+t_mobiledetail 
+
+
+顺便介绍下我们公司：
+量科邦（北京）信息技术有限公司由华尔街海归创办,并获得数百万天使投资。公司创始人和高管均有美国博士学位，有数据建模美国专利，有多年金融和互联网从业经验，曾就职于大摩，高盛，谷歌，第一资本，德意志银行，巴克莱，HBK对冲基金等全球最顶尖机构
+
+我们主要为小贷公司和银行服务，通过抓取互联网的数据，为小贷公司和银行服务。目前这块市场规模是千亿级别，未来是万亿级别。目前行业线下审核成本3%，坏账率10%，收取用户费27%。我们解决的问题就是13%的问题。万亿乘以1%就是百亿级别的公司。我们是创业公司，优势是行业门槛高（很多公司不愿意让你去实验，阿里用200多人的团队去做我们的事情），零风险，高回报。未来缔造的是BAT级别的公司。目前正在招聘爬虫牛人，美工，产品经理，有意向的可以与我联系。注意：目前还在天使轮，期权很高，未来可以实现在北京买房的梦想。
+联系电话：18701683762
+联系人：赵玉龙
+邮箱：yulong.zhao@quantgroup.cn
+
+你经常听到的是别人的故事，是不是也想让别人听下你的故事。如果想，加入我们！
+
+	
+你面前的不仅仅是一个兼职机会。看你自己怎么把握。要知道投行的人回来创业，肯定是看到了什么，能进入美国投行且当高管的，可都是非常聪明的人。年轻时一定要跟对人，可以少走很多弯路。

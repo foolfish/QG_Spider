@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IUnicomDetailDao" >
+
+  <select id="findById" resultType="com.lkb.bean.UnicomDetail" parameterType="String">
+    select * from t_unicomdetail
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteUnicomDetail" parameterType="String" >
+    delete from t_unicomdetail
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveUnicomDetail" parameterType="com.lkb.bean.UnicomDetail" >
+    insert into t_unicomdetail (id,businessType,cTime, tradeTime,callType, recevierPhone,tradeAddr,tradeType,basePay,ldPay,otherPay,totalPay,  phone,iscm,reductionPay)
+    values (#{id,jdbcType=VARCHAR},#{businessType,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, #{tradeTime,jdbcType=INTEGER}, #{callType,jdbcType=VARCHAR},  #{recevierPhone,jdbcType=VARCHAR}, 
+    #{tradeAddr,jdbcType=VARCHAR}, #{tradeType,jdbcType=VARCHAR}, #{basePay,jdbcType=DECIMAL},#{ldPay,jdbcType=DECIMAL},#{otherPay,jdbcType=DECIMAL},#{totalPay,jdbcType=DECIMAL},   
+     #{phone,jdbcType=VARCHAR}, #{iscm,jdbcType=INTEGER},#{reductionPay,jdbcType=DECIMAL})
+  </insert>
+
+
+    
+   <update id="update" parameterType="com.lkb.bean.UnicomDetail" >
+    update t_unicomdetail   
+    <set > 
+     <if test="businessType != null" >
+        businessType = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null" >
+        cTime = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeTime != null" >
+        tradeTime = #{tradeTime,jdbcType=INTEGER},
+      </if>      
+      <if test="callType != null" >
+        callType = #{callType,jdbcType=VARCHAR},
+      </if>
+      <if test="recevierPhone != null" >
+        recevierPhone = #{recevierPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeAddr != null" >
+        tradeAddr = #{tradeAddr,jdbcType=VARCHAR},
+      </if>      
+      <if test="tradeType != null" >
+        tradeType = #{tradeType,jdbcType=VARCHAR},
+      </if>
+      <if test="basePay != null" >
+        basePay = #{basePay,jdbcType=DECIMAL },
+      </if>
+      <if test="ldPay != null" >
+        ldPay = #{ldPay,jdbcType=DECIMAL },
+      </if>
+      <if test="otherPay != null" >
+        otherPay = #{otherPay,jdbcType=DECIMAL },
+      </if>
+      <if test="totalPay != null" >
+        totalPay = #{totalPay,jdbcType=DECIMAL },
+      </if>
+         <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR },
+      </if>
+         <if test="iscm != null" >
+        iscm = #{iscm,jdbcType=INTEGER },
+      </if>
+       <if test="reductionPay != null" >
+        reductionPay = #{reductionPay,jdbcType=DECIMAL },
+      </if>   
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getUnicomDetailBypt" parameterType="map" resultType="com.lkb.bean.UnicomDetail">
+ 	SELECT * FROM `t_unicomdetail` t  WHERE t.phone=#{phone} AND t.cTime=#{cTime}
+</select>
+<select id="getUnicomDetailForReport" parameterType="map" resultType="map">
+ 	select  recevierPhone,callType as callWay ,sum(tradeTime) as tradetimes ,tradeAddr,count(id) as num from
+ 	`t_unicomdetail` t  WHERE t.phone=#{phone}  group by t.recevierPhone,t.tradeType order by t.recevierPhone;
+</select>
+ <select id="getUnicomDetailForReport2" parameterType="map" resultType="map">
+ select max(cTime) as latest from `t_unicomdetail` t  where t.phone=#{teleno};
+</select>
+
+ <select id="getMaxTime" parameterType="String" resultType="com.lkb.bean.UnicomDetail">
+ 	SELECT * FROM `t_unicomdetail` t  WHERE t.phone=#{phone} order by cTime desc limit 1
+</select>
+ <select id="getUnicomDetail" parameterType="String" resultType="map">
+ 	SELECT tradeType,cTime,tradeTime,callType,recevierPhone as receiverPhone,tradeAddr FROM `t_unicomdetail` t   WHERE t.phone=#{phone}
+</select>
+
+   <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_unicomdetail ( id,businessType,cTime, tradeTime,callType, recevierPhone,tradeAddr,tradeType,basePay,ldPay,otherPay,totalPay,  phone,iscm,reductionPay) values  
+    <foreach collection="list" item="unicomdetail" index="index"  
+        separator=",">  
+        ( 
+  #{unicomdetail.id,jdbcType=VARCHAR},#{unicomdetail.businessType,jdbcType=VARCHAR}, #{unicomdetail.cTime,jdbcType=TIMESTAMP}, #{unicomdetail.tradeTime,jdbcType=INTEGER}, #{unicomdetail.callType,jdbcType=VARCHAR},  #{unicomdetail.recevierPhone,jdbcType=VARCHAR}, 
+    #{unicomdetail.tradeAddr,jdbcType=VARCHAR}, #{unicomdetail.tradeType,jdbcType=VARCHAR}, #{unicomdetail.basePay,jdbcType=DECIMAL},#{unicomdetail.ldPay,jdbcType=DECIMAL},#{unicomdetail.otherPay,jdbcType=DECIMAL},#{unicomdetail.totalPay,jdbcType=DECIMAL},   
+     #{unicomdetail.phone,jdbcType=VARCHAR}, #{unicomdetail.iscm,jdbcType=INTEGER},#{unicomdetail.reductionPay,jdbcType=DECIMAL}
+     	)  
+    </foreach>  
+   </insert> 
+
+
+</mapper>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IMobileOnlineBillDao">
+
+<select id="findById" resultType="com.lkb.bean.MobileOnlineBill" parameterType="String">
+    select * from t_mobileonlinebill
+    where id = #{id}
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from t_mobileonlinebill
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="save" parameterType="com.lkb.bean.MobileOnlineBill" >
+    insert into t_mobileonlinebill (id, phone, monthly, totalFlow, freeFlow, chargeFlow, trafficCharges, iscm)
+    values (#{id,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{monthly,jdbcType=TIMESTAMP},#{totalFlow,jdbcType=BIGINT},#{freeFlow,jdbcType=BIGINT},#{chargeFlow,jdbcType=BIGINT},
+    #{trafficCharges,jdbcType=DECIMAL},#{iscm,jdbcType=INTEGER})
+  </insert>
+
+   <update id="update" parameterType="com.lkb.bean.MobileOnlineBill" >
+    update t_mobileonlinebill   
+    <set > 
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="monthly != null" >
+        monthly = #{monthly,jdbcType=TIMESTAMP},
+      </if>
+      <if test="totalFlow != null" >
+        totalFlow = #{totalFlow,jdbcType=BIGINT},
+      </if>  
+      <if test="freeFlow != null" >
+        freeFlow = #{freeFlow,jdbcType=BIGINT},
+      </if>
+      <if test="chargeFlow != null" >
+        chargeFlow = #{chargeFlow,jdbcType=BIGINT},
+      </if>
+      <if test="trafficCharges != null" >
+        trafficCharges = #{trafficCharges,jdbcType=DECIMAL},
+      </if>
+      <if test="iscm != null" >
+        iscm = #{iscm,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getMobileOnlineBillByphone" parameterType="map" resultType="com.lkb.bean.MobileOnlineBill">
+ 	SELECT * FROM `t_mobileonlinebill` t  WHERE t.phone=#{phone}
+ </select>
+ <!-- 姜宗仁添加     报告使用《details phoneDetail》 -->
+ <select id="getMobileOnlineBillForReport" parameterType="String" resultType="map">
+ 	SELECT t.monthly as time ,t.totalFlow as allFlow,'' as allTime,t.trafficCharges as allPay  FROM `t_mobileonlinebill` t  WHERE t.phone=#{phone}
+ </select>
+ <!-- 姜宗仁添加     报告使用《details phoneDetail》 -->
+ <select id="getMaxTime" parameterType="String" resultType="com.lkb.bean.MobileOnlineBill">
+ 	SELECT * FROM `t_mobileonlinebill` t  WHERE t.phone=#{phone} order by monthly desc limit 1
+ </select>
+ 
+ <select id="getMaxNumTel" parameterType="map" resultType="Date">
+ 	SELECT t.monthly FROM `t_mobileonlinebill` t  WHERE t.phone=#{phone} order by t.monthly desc limit 12
+</select>
+
+ <select id="getMobileOnlineBill" parameterType="String" resultType="com.lkb.bean.MobileOnlineBill">
+ 	SELECT * FROM `t_mobileonlinebill` t  WHERE t.phone=#{phone} and t.monthly=#{monthly}
+ </select>
+  
+
+    <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_mobileonlinebill (id, phone, monthly, totalFlow, freeFlow, chargeFlow, trafficCharges, iscm) values  
+    <foreach collection="list" item="mobileonlinebill" index="index"  
+        separator=",">  
+        ( 
+      #{mobileonlinebill.id,jdbcType=VARCHAR},#{mobileonlinebill.phone,jdbcType=VARCHAR},#{mobileonlinebill.monthly,jdbcType=TIMESTAMP},#{mobileonlinebill.totalFlow,jdbcType=BIGINT},
+      #{mobileonlinebill.freeFlow,jdbcType=BIGINT},#{mobileonlinebill.chargeFlow,jdbcType=BIGINT},#{mobileonlinebill.trafficCharges,jdbcType=DECIMAL},#{mobileonlinebill.iscm,jdbcType=INTEGER}
+     	)  
+    </foreach>  
+   </insert> 
+
+
+</mapper>

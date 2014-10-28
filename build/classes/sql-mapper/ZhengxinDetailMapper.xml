@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IZhengxinDetailDao" >
+
+  <select id="findById" resultType="com.lkb.bean.ZhengxinDetail" parameterType="String">
+    select * from t_zhengxindetail
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteZhengxinDetail" parameterType="String" >
+    delete from t_zhengxindetail
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveZhengxinDetail" parameterType="com.lkb.bean.ZhengxinDetail" >
+    insert into t_zhengxindetail ( id,loginName, cType,cRecord)
+    values (#{id,jdbcType=VARCHAR},#{loginName,jdbcType=VARCHAR},#{cType,jdbcType=VARCHAR},#{cRecord,jdbcType=VARCHAR})
+  </insert>
+  
+
+
+  
+   <update id="update" parameterType="com.lkb.bean.ZhengxinDetail" >
+    update t_zhengxindetail   
+    <set> 
+     <if test="loginName != null" >
+        loginName = #{loginName,jdbcType=VARCHAR},
+     </if>
+     <if test="cType != null" >
+        cType = #{cType,jdbcType=VARCHAR},
+     </if>
+   
+	<if test="cRecord != null" >
+        cRecord = #{cRecord,jdbcType=VARCHAR},
+     </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getZhengxinDetail" parameterType="map" resultType="com.lkb.bean.ZhengxinDetail">
+ SELECT * FROM `t_zhengxindetail` t  WHERE t.loginName=#{loginName}  AND t.cType=#{cType} 
+ AND t.cRecord=#{cRecord}
+</select>
+ 
+<select id="getZhengxinByLoginName" parameterType="String" resultType="com.lkb.bean.ZhengxinDetail">
+ SELECT * FROM `t_zhengxindetail` t  WHERE t.loginName=#{loginName} 
+</select>
+ 
+
+</mapper>

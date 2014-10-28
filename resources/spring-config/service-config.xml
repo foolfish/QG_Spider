@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- - Copyright 1999-2011 Alibaba Group. - - Licensed under the Apache License, Version 2.0 (the "License"); 
+	- you may not use this file except in compliance with the License. - You may obtain a copy of the License 
+	at - - http://www.apache.org/licenses/LICENSE-2.0 - - Unless required by applicable law or agreed to 
+	in writing, software - distributed under the License is distributed on an "AS IS" BASIS, - WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. - See the License for the specific language governing 
+	permissions and - limitations under the License. -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd"
+	default-autowire="byName">
+	<context:annotation-config />
+
+
+	<context:component-scan base-package="com.lkb.daoImp,com.lkb.serviceImp,com.lkb.util"/>
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="umDataSource" />
+	</bean>
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+	  <property name="basePackage" value="com.lkb.dao" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	<bean id="umSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="mapperLocations">
+			<list>
+				<value>classpath:sql-mapper/*Mapper.xml</value>
+			</list>
+		</property>
+		<property name="dataSource" ref="umDataSource" />
+	</bean>
+	<bean class="com.lkb.context.ContextLifecycle" lazy-init="false" init-method="initializing" destroy-method="finalizing" />
+
+</beans>

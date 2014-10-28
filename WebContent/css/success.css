@@ -1,0 +1,10 @@
+	/* ÓÃ»§µÇÂ¼ pjk */
+	.success-title {padding-bottom: 20px; border-bottom: 1px solid #dcdcdc; text-align: center;}
+	.success-title h1 {font-size: 20px; font-family: 'Microsoft YaHei';}
+	.success-info {text-align: center; margin: 50px 0;}
+	.success-info-reportnum {margin: 0 8px;}
+	.success-submit {text-align: center; margin: 70px 0;}
+	.success-btn {width: 120px; height: 36px; color: #fff; font-size: 16px; cursor: pointer;}
+	.success-btn-back {background: #00a4d9; border: 1px solid #00a4d9;}
+	.success-btn-quit {background: #c7c7c7; border: 1px solid #c7c7c7;}
+	.success-btn-hover {background: #00b5ef; border: 1px solid #00b5ef;}

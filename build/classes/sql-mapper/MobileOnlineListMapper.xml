@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IMobileOnlineListDao">
+
+<select id="findById" resultType="com.lkb.bean.MobileOnlineList" parameterType="String">
+    select * from t_mobileonlinelist
+    where id = #{id}
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from t_mobileonlinelist
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="save" parameterType="com.lkb.bean.MobileOnlineList" >
+    insert into t_mobileonlinelist (id, phone, cTime, tradeAddr, onlineType, onlineTime, totalFlow, cheapService, communicationFees)
+    values (#{id,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{cTime,jdbcType=TIMESTAMP}, #{tradeAddr,jdbcType=VARCHAR}, #{onlineType,jdbcType=VARCHAR},
+      #{onlineTime,jdbcType=BIGINT},  #{totalFlow,jdbcType=BIGINT}, #{cheapService,jdbcType=VARCHAR},#{communicationFees,jdbcType=DECIMAL})
+  </insert>
+
+   <update id="update" parameterType="com.lkb.bean.MobileOnlineList" >
+    update t_mobileonlinelist   
+    <set > 
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="cTime != null" >
+        cTime = #{cTime,jdbcType=TIMESTAMP},
+      </if>  
+      <if test="tradeAddr != null" >
+        tradeAddr = #{tradeAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="onlineType != null" >
+        onlineType = #{onlineType,jdbcType=VARCHAR},
+      </if>
+      <if test="onlineTime != null" >
+        onlineTime = #{onlineTime,jdbcType=BIGINT},
+      </if>
+      <if test="totalFlow != null" >
+        totalFlow = #{totalFlow,jdbcType=BIGINT},
+      </if>
+	  <if test="cheapService != null" >
+        cheapService = #{cheapService,jdbcType=VARCHAR},
+      </if>
+      <if test="communicationFees != null" >
+        communicationFees = #{communicationFees,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getMobileOnlineListBypt" parameterType="map" resultType="com.lkb.bean.MobileOnlineList">
+ 	SELECT * FROM `t_mobileonlinelist` t  WHERE t.phone=#{phone} AND t.cTime=#{cTime}
+ </select>
+
+<!-- 姜宗仁修改     报告使用《details phoneDetail》 --> 
+ <select id="getMobileOnlineListForReport" parameterType="String" resultType="map">
+ select t.cTime,t.onlineTime as tradeTime,t.totalFlow as flow,t.tradeAddr,t.onlineType as netType,t.communicationFees as fee   from `t_mobileonlinelist` t  WHERE t.phone=#{phone};
+ </select>
+<!-- 姜宗仁修改    报告使用《details phoneDetail》 -->
+
+ 
+ 
+ <select id="getMobileOnlineListForReport2" parameterType="map" resultType="map">
+   select max(cTime) as latest from `t_mobileonlinelist` t  where t.phone=#{phone};
+ </select>
+
+ <select id="getMaxTime" parameterType="String" resultType="com.lkb.bean.MobileOnlineList">
+ 	SELECT * FROM `t_mobileonlinelist` t  WHERE t.phone=#{phone} order by cTime desc limit 1
+ </select>
+
+ <select id="getMobileOnlineList" parameterType="String" resultType="map">
+ 	SELECT cTime,tradeAddr,onlineType,onlineTime,totalFlow,cheapService,communicationFees FROM `t_mobileonlinelist` t  WHERE t.phone=#{phone}
+ </select>
+  
+  <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_mobileonlinelist (id, phone, cTime, tradeAddr, onlineType, onlineTime, totalFlow, cheapService, communicationFees) values  
+    <foreach collection="list" item="mobileonlinelist" index="index"  
+        separator=",">  
+        ( 
+      #{mobileonlinelist.id,jdbcType=VARCHAR},#{mobileonlinelist.phone,jdbcType=VARCHAR},#{mobileonlinelist.cTime,jdbcType=TIMESTAMP},#{mobileonlinelist.tradeAddr,jdbcType=VARCHAR},
+      #{mobileonlinelist.onlineType,jdbcType=VARCHAR},#{mobileonlinelist.onlineTime,jdbcType=BIGINT},#{mobileonlinelist.totalFlow,jdbcType=BIGINT},
+      #{mobileonlinelist.cheapService,jdbcType=VARCHAR},#{mobileonlinelist.communicationFees,jdbcType=DECIMAL}
+     	)  
+    </foreach>  
+  </insert> 
+
+
+</mapper>

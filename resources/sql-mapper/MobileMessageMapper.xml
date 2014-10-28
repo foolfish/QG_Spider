@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IMobileMessageDao" >
+
+  <select id="findById" resultType="com.lkb.bean.MobileMessage" parameterType="String">
+    select * from t_mobilemessage
+    where id = #{id}
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from t_mobilemessage
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="save" parameterType="com.lkb.bean.MobileMessage" >
+    insert into t_mobilemessage (id, sentTime, sentAddr,recevierPhone, allPay, phone, createTs,tradeWay)
+    values (#{id,jdbcType=VARCHAR},#{sentTime,jdbcType=TIMESTAMP}, #{sentAddr,jdbcType=VARCHAR}, #{recevierPhone,jdbcType=VARCHAR},
+      #{allPay,jdbcType=DECIMAL},  #{phone,jdbcType=VARCHAR}, #{createTs,jdbcType=TIMESTAMP},#{tradeWay,jdbcType=VARCHAR})
+  </insert>
+  
+	
+ 
+   <update id="update" parameterType="com.lkb.bean.MobileMessage" >
+    update t_mobilemessage   
+    <set > 
+    
+     <if test="sentAddr != null" >
+        sentAddr = #{sentAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="sentTime != null" >
+        cTime = #{sentTime,jdbcType=TIMESTAMP},
+      </if>     
+       <if test="recevierPhone != null" >
+        recevierPhone = #{recevierPhone,jdbcType=VARCHAR },
+      </if>
+     
+      <if test="allPay != null" >
+        allPay = #{allPay,jdbcType=DECIMAL },
+      </if>
+         <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR },
+      </if>
+         <if test="createTs != null" >
+        iscm = #{createTs,jdbcType=TIMESTAMP },
+      </if>
+      <if test="tradeWay != null" >
+        tradeWay = #{tradeWay,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getByPhone" parameterType="map" resultType="com.lkb.bean.MobileMessage">
+ 	SELECT * FROM `t_mobilemessage` t  WHERE t.phone=#{phone} AND t.sentTime=#{sentTime}
+</select>
+ <select id="getMaxSentTime" parameterType="String" resultType="com.lkb.bean.MobileMessage">
+ 	SELECT * FROM `t_mobilemessage` t  WHERE t.phone=#{phone} order by sentTime desc limit 1
+</select>
+
+ <select id="getMobileMessageForReport" parameterType="map" resultType="map">
+ 	select  recevierPhone,sentAddr ,count(id) as num from
+ 	`t_mobilemessage` t  WHERE t.phone=#{phone}  group by t.recevierPhone order by t.recevierPhone;
+</select>
+ <select id="getMobileMessageForReport2" parameterType="map" resultType="map">
+ select max(sentTime) as latest from `t_mobilemessage` t  where t.phone=#{phone};
+</select>
+
+ <select id="getList" parameterType="String" resultType="map">
+ 	SELECT sentAddr, sentTime, recevierPhone, allPay, phone, createTs,tradeWay from `t_mobilemessage` t   WHERE t.phone=#{phone}
+</select>
+ <select id="getListByPhone" parameterType="String" resultType="map">
+ 	SELECT t.sentAddr, t.sentTime, t.recevierPhone as receiverPhone,t.tradeWay from `t_mobilemessage` t   WHERE t.phone=#{phone} order by senttime desc;
+</select>
+
+  <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_mobilemessage ( id, sentTime, sentAddr,recevierPhone, allPay, phone, createTs,tradeWay) values  
+    <foreach collection="list" item="mobilemessage" index="index"  
+        separator=",">  
+        ( 
+      #{mobilemessage.id,jdbcType=VARCHAR},#{mobilemessage.sentTime,jdbcType=TIMESTAMP}, #{mobilemessage.sentAddr,jdbcType=VARCHAR}, #{mobilemessage.recevierPhone,jdbcType=VARCHAR},
+      #{mobilemessage.allPay,jdbcType=DECIMAL},  #{mobilemessage.phone,jdbcType=VARCHAR}, #{mobilemessage.createTs,jdbcType=TIMESTAMP},#{mobilemessage.tradeWay,jdbcType=VARCHAR}
+     	)  
+    </foreach>  
+   </insert> 
+      
+</mapper>

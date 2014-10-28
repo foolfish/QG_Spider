@@ -1,0 +1,7 @@
+ip=10.10.10.101
+port=22
+username=root
+password=lkb201418*
+localFilePre=/usr/local/tomcat7/webapps
+remoteRoad=/usr/local/tomcat7/webapps/img/authcode
+islinux=false

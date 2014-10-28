@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.ILoseContentDao" >
+
+  <select id="findById" resultType="com.lkb.bean.LoseContent" parameterType="String">
+    select * from 't_lost_content'
+    where id = #{id}
+  </select>
+  
+  <delete id="delete" parameterType="com.lkb.bean.LoseContent" >
+    delete from t_lostcontent WHERE loginName=#{loginName} and userSource=#{userSource} and type=#{type}
+  </delete>
+ 
+
+  <insert id="save" parameterType="com.lkb.bean.LoseContent" >
+    insert into t_lostcontent (id,url,loginName,userSource,updateTime,errorCode,code,verify,flag,type,count) values (#{id,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{userSource,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},#{errorCode,jdbcType=NUMERIC},#{code,jdbcType=NUMERIC},#{verify,jdbcType=VARCHAR},#{flag,jdbcType=VARCHAR},#{type,jdbcType=NUMERIC},#{count,jdbcType=NUMERIC})
+  </insert>
+
+  
+   <update id="update" parameterType="com.lkb.bean.LoseContent" >
+    update t_lostcontent   
+    <set > 
+      <if test="loginName != null" >
+        loginName = #{loginName,jdbcType=VARCHAR},
+      </if>
+       <if test="userSource != null" >
+        userSource = #{userSource,jdbcType=VARCHAR},
+      </if>
+       <if test="type != null" >
+        type = #{type,javaType=int,jdbcType=NUMERIC},
+      </if>
+       <if test="updateTime != null" >
+        type = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      
+      <if test="errorCode != null" >
+        updateTime = #{errorCode,jdbcType=NUMERIC},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=NUMERIC},
+      </if>
+      <if test="verify != null" >
+        endTime = #{verify,jdbcType=VARCHAR},
+      </if>
+        <if test="url != null" >
+        type = #{url,jdbcType=VARCHAR},
+      </if> 
+        <if test="flag != null" >
+        flag = #{flag,jdbcType=VARCHAR}
+      </if> 
+        <if test="count != null" >
+        flag = #{count,jdbcType=NUMERIC}
+      </if> 
+      
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+ <select id="getAll" parameterType="map" resultType="com.lkb.bean.LoseContent">
+ 	SELECT * FROM t_lostcontent t  WHERE  t.loginName=#{loginName} and t.userSource=#{userSource} and t.type=#{type} order by t.code desc;
+</select>
+   <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_lostcontent (id,url,loginName,userSource,updateTime,errorCode,code,verify,flag,type,count) values  
+    <foreach collection="list" item="lose" index="index"  
+        separator=",">  
+        ( 
+     #{lose.id,jdbcType=VARCHAR}, #{lose.url,jdbcType=VARCHAR}, #{lose.loginName,jdbcType=VARCHAR}, #{lose.userSource,jdbcType=VARCHAR}, #{lose.updateTime,jdbcType=TIMESTAMP},#{lose.errorCode,jdbcType=NUMERIC},#{lose.code,jdbcType=NUMERIC},#{lose.verify,jdbcType=VARCHAR}, #{lose.flag,jdbcType=VARCHAR},#{lose.type,jdbcType=NUMERIC},#{lose.count,jdbcType=NUMERIC}
+     	)  
+    </foreach>  
+   </insert> 
+
+
+</mapper>

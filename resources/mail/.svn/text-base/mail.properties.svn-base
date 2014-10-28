@@ -1,0 +1,8 @@
+tableWhole=table[width=800]
+tableFirst=table
+p=p
+td30=td[width=30%]
+td=td
+tr=tr
+div=div[style=padding: 2em; text-indent: 2em; font-size: 12px;]
+span=span

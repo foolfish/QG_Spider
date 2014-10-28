@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.INewHouseDao" >
+
+  <select id="findById" resultType="com.lkb.bean.NewHouse" parameterType="int">
+    select * from t_new_hourse
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteNewHouse" parameterType="int" >
+    delete from t_new_hourse
+    where id = #{id}
+  </delete>
+
+  <insert id="saveNewHouse" parameterType="com.lkb.bean.NewHouse" >
+    insert into t_new_hourse (id,city,hname,htype,hfix,hlocation,havg)
+    values (#{id,jdbcType=INTEGER},#{city,jdbcType=VARCHAR},#{hname,jdbcType=VARCHAR}, 
+    #{htype,jdbcType=VARCHAR}, #{hfix,jdbcType=VARCHAR}, #{hlocation,jdbcType=VARCHAR},    
+     #{havg,jdbcType=DECIMAL})
+  </insert>
+  
+
+   <update id="update" parameterType="com.lkb.bean.NewHouse" >
+    update t_new_hourse   
+    <set > 
+     <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+     <if test="hname != null" >
+        hname = #{hname,jdbcType=VARCHAR},
+      </if>
+      <if test="htype != null" >
+        htype = #{htype,jdbcType=VARCHAR},
+      </if>
+       <if test="hfix != null" >
+        hfix = #{hfix,jdbcType=VARCHAR},
+      </if>
+       <if test="hlocation != null" >
+        hlocation = #{hlocation,jdbcType=VARCHAR},
+      </if>
+   	  <if test="havg != null" >
+        havg = #{havg,jdbcType=DECIMAL},
+      </if> 
+        </set>  
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="getAllCity" resultType="map">
+	select distinct(city) as city from t_new_hourse
+</select>
+  
+</mapper>

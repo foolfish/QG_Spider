@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IYqMaDao" >
+
+  <select id="get" resultType="com.lkb.bean.YqMa" parameterType="Integer">
+    select * from t_yaoqingma
+    where random = #{random}
+  </select>
+  
+  <select id="getAll" resultType="list"  >
+   	select * from t_yaoqingma
+  </select>
+
+  <insert id="save" parameterType="com.lkb.bean.YqMa" >
+    insert into t_yaoqingma ( random,userId)
+    values (  #{random,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR})
+  </insert>
+  
+   <update id="update" parameterType="com.lkb.bean.YqMa" >
+    update t_yaoqingma
+    <set> 
+      <if test="userId != null" >
+        userId = #{userId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where random = #{random,jdbcType=VARCHAR}
+  </update>
+  
+  
+		
+</mapper>

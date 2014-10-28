@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IUserDao" >
+
+  <select id="findById" resultType="com.lkb.bean.User" parameterType="String">
+    select * from t_user
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteUser" parameterType="String" >
+    delete from t_user
+    where id = #{id}
+  </delete>
+
+
+  <insert id="saveUser" parameterType="com.lkb.bean.User" >
+    insert into t_user (id, loginName,loginPassword, userName, memberLevel, buyLevel,memberType,petName,phone,email,realName,idcard,addr,usersource,usersource2,sex,secretLevel,
+    taobaoName,identifyTime,major,registerDate,isRealName,isProtected,isPhone,parentId,modifyDate,markId,fixphone,packageName,ssNo,workerNature,jobTitle,pUnit,sspComNo,
+    hcatagory,cardstatus,carePerson,paySalary,payStatus, cardType,cardNo,merry,yBalance,yincome,qq,shebaolocation,
+     entranceDate ,
+	graduateDate,
+	eduType,
+	eduRecord,
+	eduSchool,
+	schoolPlace,
+	specialty,
+	eduForm,
+	certificateId,
+	eduConclusion,
+	hourse,cars,phoneRemain
+	)
+    values ( #{id,jdbcType=VARCHAR},   #{loginName,jdbcType=VARCHAR}, #{loginPassword,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{memberLevel,jdbcType=VARCHAR}, 
+      #{buyLevel,jdbcType=VARCHAR}, #{memberType,jdbcType=VARCHAR}, #{petName,jdbcType=VARCHAR}
+      , #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{idcard,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}
+      , #{usersource,jdbcType=VARCHAR}, #{usersource2,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{secretLevel,jdbcType=VARCHAR}, #{taobaoName,jdbcType=VARCHAR}, #{identifyTime,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}
+      , #{registerDate,jdbcType=TIMESTAMP}, #{isRealName,jdbcType=VARCHAR}, #{isProtected,jdbcType=VARCHAR}, #{isPhone,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR},
+      #{modifyDate,jdbcType=TIMESTAMP}, #{markId,jdbcType=VARCHAR}, #{fixphone,jdbcType=VARCHAR},#{packageName,jdbcType=VARCHAR}
+      ,#{ssNo,jdbcType=VARCHAR},#{workerNature,jdbcType=VARCHAR},#{jobTitle,jdbcType=VARCHAR},#{pUnit,jdbcType=VARCHAR}
+      ,#{sspComNo,jdbcType=VARCHAR},#{hcatagory,jdbcType=VARCHAR},#{cardstatus,jdbcType=VARCHAR},#{carePerson,jdbcType=VARCHAR}
+      ,#{paySalary,jdbcType=VARCHAR},#{payStatus,jdbcType=VARCHAR},#{cardType,jdbcType=VARCHAR},#{cardNo,jdbcType=VARCHAR},#{merry,jdbcType=VARCHAR},
+      #{yBalance,jdbcType=DECIMAL},#{yincome,jdbcType=DECIMAL},#{qq,jdbcType=VARCHAR},#{shebaolocation,jdbcType=VARCHAR},
+      #{entranceDate,jdbcType=TIMESTAMP}, #{graduateDate,jdbcType=TIMESTAMP},#{eduType,jdbcType=VARCHAR}
+      ,#{eduRecord,jdbcType=VARCHAR},#{eduSchool,jdbcType=VARCHAR},#{schoolPlace,jdbcType=VARCHAR},#{specialty,jdbcType=VARCHAR},#{eduForm,jdbcType=VARCHAR}
+      ,#{certificateId,jdbcType=VARCHAR},#{eduConclusion,jdbcType=VARCHAR},#{hourse,jdbcType=INTEGER},#{cars,jdbcType=INTEGER},#{phoneRemain,jdbcType=DECIMAL})
+  </insert>
+
+<select id="getUserByCardNoAndSource" parameterType="map" resultType="com.lkb.bean.User">
+ SELECT * FROM `t_user` t  WHERE t.cardNo=#{cardNo} AND t.usersource=#{usersource}
+</select>
+	
+ <select id="getUserByUserNamesource" parameterType="map" resultType="com.lkb.bean.User">
+ SELECT * FROM `t_user` t  WHERE t.loginName=#{loginName} AND t.usersource=#{usersource}
+</select>
+
+ <select id="getUserByPhone" parameterType="map" resultType="com.lkb.bean.User">
+ SELECT * FROM `t_user` t  WHERE t.phone=#{phone} AND t.usersource=#{usersource}
+</select>
+
+
+ <select id="getUserByParentId" parameterType="map" resultType="com.lkb.bean.User">
+ SELECT * FROM `t_user` t  WHERE t.parentId=#{parentId} 
+   <if test="loginName != null" >
+      AND  loginName = #{loginName}
+   </if>
+   <if test="usersource != null" >
+      AND  usersource = #{usersource}
+   </if>
+    <if test="taobaoName != null" >
+      AND  taobaoName = #{taobaoName}
+   </if> 
+</select>
+<select id="getUserSourceByParentId" parameterType="map" resultType="com.lkb.bean.User">
+ SELECT distinct(t.usersource) FROM `t_user` t  WHERE t.parentId=#{parentId} and t.modifyDate > #{modifyDate} 
+</select>
+
+ <select id="getUserByParentIdSource" parameterType="map" resultType="com.lkb.bean.User">
+ SELECT * FROM `t_user` t  WHERE t.parentId=#{parentId}  AND t.usersource=#{usersource}
+  <if test="loginName != null" >
+      AND  loginName = #{loginName}
+   </if>
+</select>
+<select id="getUserByParentIdSource2" parameterType="map" resultType="com.lkb.bean.User">
+ SELECT * FROM `t_user` t  WHERE t.parentId=#{parentId}  AND t.usersource2=#{usersource2}
+</select>
+
+ <select id="checkLoginName" parameterType="String" resultType="com.lkb.bean.User">
+  SELECT * FROM `t_user` t  where t.loginName = #{loginName} and  t.usersource='BASE' limit 1
+</select>
+  
+ <select id="checkLogin" parameterType="map" resultType="com.lkb.bean.User">
+ SELECT * FROM `t_user` t  WHERE t.loginName=#{loginName} and t.loginPassword=#{loginPassword} AND t.usersource='BASE'
+</select>  
+<select id="getPhoneInfoForReport" parameterType="map" resultType="map">
+  SELECT t.idcard as idCard,t.registerDate,t.realName,t.addr,t.email,t.phoneRemain FROM `t_user` t  where t.loginName = #{loginName} and t.parentId =#{parentId}  limit 1
+</select>
+ <select id="checkParse" parameterType="map" resultType="com.lkb.bean.User">
+SELECT * FROM `t_user` WHERE modifyDate >= #{modifyDate}  AND parentId = #{parentId} order by usersource
+</select> 
+
+ <select id="getUserByParentIdRealName" parameterType="map" resultType="com.lkb.bean.User">
+ SELECT * FROM `t_user` t  WHERE t.parentId=#{parentId}  AND t.realname=#{realname}
+</select>
+ 
+ 
+ <select id="getPhones" parameterType="map" resultType="map">
+SELECT phone FROM `t_user` WHERE parentId = #{parentId} AND usersource IN('LIANTONG','YIDONG','DIANXIN')
+</select>
+  
+<select id="getUsercount" parameterType="map" resultType="int">
+SELECT COUNT(DISTINCT(usersource)) as usercount FROM `t_user` WHERE parentId=#{parentId}
+</select>
+
+ <select id="getUserIdFromReportId" parameterType="String" resultType="String">
+select id from t_user where markId= #{markId} 
+</select>
+
+
+   <update id="update" parameterType="com.lkb.bean.User" >
+    update t_user
+    <set > 
+     <if test="loginName != null" >
+        loginName = #{loginName,jdbcType=VARCHAR},
+      </if>
+       <if test="loginPassword != null" >
+        loginPassword = #{loginPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        userName = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberLevel != null" >
+        memberLevel = #{memberLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="buyLevel != null" >
+        buyLevel = #{buyLevel,jdbcType=VARCHAR},
+      </if>
+        <if test="memberType != null" >
+        memberType = #{memberType,jdbcType=VARCHAR},
+      </if>
+        <if test="petName != null" >
+        petName = #{petName,jdbcType=VARCHAR},
+      </if>	 		
+       <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+       <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+       <if test="realName != null" >
+        realName = #{realName,jdbcType=VARCHAR},
+      </if>
+       <if test="idcard != null" >
+        idcard = #{idcard,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        addr = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="qq != null" >
+        qq = #{qq,jdbcType=VARCHAR},
+      </if>
+       <if test="usersource != null" >
+        usersource = #{usersource,jdbcType=VARCHAR},
+      </if>
+      <if test="usersource2 != null" >
+        usersource2 = #{usersource2,jdbcType=VARCHAR},
+      </if>
+       <if test="sex != null" >
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+    <if test="secretLevel != null" >
+        secretLevel = #{secretLevel,jdbcType=VARCHAR},
+      </if>
+    
+    <if test="taobaoName != null" >
+        taobaoName = #{taobaoName,jdbcType=VARCHAR},
+      </if>
+    
+    <if test="identifyTime != null" >
+        identifyTime = #{identifyTime,jdbcType=VARCHAR},
+      </if>
+    
+    <if test="major != null" >
+        major = #{major,jdbcType=VARCHAR},
+      </if>
+    
+    <if test="registerDate != null" >
+        registerDate = #{registerDate,jdbcType=TIMESTAMP},
+      </if>
+    
+    <if test="isRealName != null" >
+        isRealName = #{isRealName,jdbcType=VARCHAR},
+      </if>
+    <if test="isProtected != null" >
+        isProtected = #{isProtected,jdbcType=VARCHAR},
+      </if>
+      <if test="isPhone != null" >
+        isPhone = #{isPhone,jdbcType=VARCHAR},
+      </if> 
+       <if test="parentId != null" >
+        parentId = #{parentId,jdbcType=VARCHAR},
+      </if>  
+	   	<if test="modifyDate != null" >
+	        modifyDate = #{modifyDate,jdbcType=TIMESTAMP},
+	    </if>
+	    <if test="markId != null" >
+        markId = #{markId,jdbcType=VARCHAR},
+      </if>
+      <if test="fixphone != null" >
+        fixphone = #{fixphone,jdbcType=VARCHAR},
+      </if> 
+        <if test="packageName != null" >
+        packageName = #{packageName,jdbcType=VARCHAR},
+      </if> 
+      
+       <if test="ssNo != null" >
+        ssNo = #{ssNo,jdbcType=VARCHAR},
+      </if>
+       <if test="workerNature != null" >
+        workerNature = #{workerNature,jdbcType=VARCHAR},
+      </if>
+       <if test="jobTitle != null" >
+        jobTitle = #{jobTitle,jdbcType=VARCHAR},
+      </if>
+       <if test="pUnit != null" >
+        pUnit = #{pUnit,jdbcType=VARCHAR},
+      </if>
+       <if test="sspComNo != null" >
+        sspComNo = #{sspComNo,jdbcType=VARCHAR},
+      </if>
+       <if test="hcatagory != null" >
+        hcatagory = #{hcatagory,jdbcType=VARCHAR},
+      </if>
+       <if test="cardstatus != null" >
+        cardstatus = #{cardstatus,jdbcType=VARCHAR},
+      </if>
+       <if test="carePerson != null" >
+        carePerson = #{carePerson,jdbcType=VARCHAR},
+      </if>
+       <if test="paySalary != null" >
+        paySalary = #{paySalary,jdbcType=VARCHAR},
+      </if>
+       <if test="payStatus != null" >
+        payStatus = #{payStatus,jdbcType=VARCHAR},
+      </if>     
+      <if test="cardType != null" >
+        cardType = #{cardType,jdbcType=VARCHAR},
+      </if>  
+      <if test="cardNo != null" >
+        cardNo = #{cardNo,jdbcType=VARCHAR},
+      </if>  
+       <if test="merry != null" >
+        merry = #{merry,jdbcType=VARCHAR},
+      </if> 
+      <if test="yBalance != null" >
+        yBalance = #{yBalance,jdbcType=DECIMAL},
+      </if> 
+      <if test="yincome != null" >
+        yincome = #{yincome,jdbcType=DECIMAL},
+      </if>  
+      <if test="shebaolocation != null" >
+        shebaolocation = #{shebaolocation,jdbcType=VARCHAR},
+      </if>  
+      
+		<if test="entranceDate != null" >
+	        entranceDate = #{entranceDate,jdbcType=TIMESTAMP},
+	    </if>
+	    	<if test="graduateDate != null" >
+	        graduateDate = #{graduateDate,jdbcType=TIMESTAMP},
+	    </if>
+	    
+       <if test="eduType != null" >
+        eduType = #{eduType,jdbcType=VARCHAR},
+      </if> 
+   
+       <if test="eduRecord != null" >
+        eduRecord = #{eduRecord,jdbcType=VARCHAR},
+      </if> 
+      
+       <if test="eduSchool != null" >
+        eduSchool = #{eduSchool,jdbcType=VARCHAR},
+      </if> 
+     
+       <if test="schoolPlace != null" >
+        schoolPlace = #{schoolPlace,jdbcType=VARCHAR},
+      </if> 
+     
+       <if test="specialty != null" >
+        specialty = #{specialty,jdbcType=VARCHAR},
+      </if> 
+   
+       <if test="eduForm != null" >
+        eduForm = #{eduForm,jdbcType=VARCHAR},
+      </if> 
+ 
+       <if test="certificateId != null" >
+        certificateId = #{certificateId,jdbcType=VARCHAR},
+      </if> 
+  
+       <if test="eduConclusion != null" >
+        eduConclusion = #{eduConclusion,jdbcType=VARCHAR},
+      </if> 
+      <if test="hourse != null" >
+        hourse = #{hourse,jdbcType=VARCHAR},
+      </if> 
+      <if test="cars != null" >
+        cars = #{cars,jdbcType=INTEGER},
+      </if> 
+      <if test="phoneRemain != null" >
+        phoneRemain = #{phoneRemain,jdbcType=DECIMAL},
+      </if> 
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+
+
+</mapper>

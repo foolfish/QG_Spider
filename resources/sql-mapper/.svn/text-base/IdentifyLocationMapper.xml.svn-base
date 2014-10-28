@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IIdentifyLocationDao" >
+
+  <select id="findById" resultType="com.lkb.bean.IdentifyLocation" parameterType="String">
+    select * from t_identifyLocation
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteIdentifyLocation" parameterType="String" >
+    delete from t_identifyLocation
+    where id = #{id}
+  </delete>
+
+  <insert id="saveIdentifyLocation" parameterType="com.lkb.bean.IdentifyLocation" >
+    insert into t_identifyLocation (id, city)
+    values ( #{id,jdbcType=VARCHAR},   #{city,jdbcType=VARCHAR})
+  </insert>
+
+
+   <update id="update" parameterType="com.lkb.bean.IdentifyLocation" >
+    update t_identifyLocation
+    <set > 
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+		
+		
+</mapper>

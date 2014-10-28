@@ -1,0 +1,6 @@
+totalPage1=span[id=totalPage1]
+callDetailHead=table[id=callDetailHead]
+callDetailBody=table[id=callDetailBody]
+tr=tr
+th=th
+td=td

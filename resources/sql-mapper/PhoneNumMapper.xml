@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IPhoneNumDao" >
+
+  <select id="findById" resultType="com.lkb.bean.PhoneNum" parameterType="String">
+    select * from t_phonenum
+    where phone = #{phone} limit 1
+  </select>
+  
+  <delete id="deletePhoneNum" parameterType="String" >
+    delete from t_phonenum
+    where phone = #{phone}
+  </delete>
+
+
+	 
+  <insert id="savePhoneNum" parameterType="com.lkb.bean.PhoneNum" >
+    insert into t_phonenum ( phone , province ,city ,  ptype)
+    values ( #{phone,jdbcType=VARCHAR},  #{province,jdbcType=VARCHAR},  #{city,jdbcType=VARCHAR},  #{ptype,jdbcType=VARCHAR} )
+  </insert>
+	
+ <select id="getPhoneNumByBaseUseridsource" parameterType="map" resultType="com.lkb.bean.PhoneNum">
+ SELECT * FROM `t_phonenum` t  WHERE t.phone=#{phone}
+</select>
+
+
+   <update id="update" parameterType="com.lkb.bean.PhoneNum" >
+    update t_phonenum
+    <set > 
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+	  <if test="ptype != null" >
+        ptype = #{ptype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where phone = #{phone,jdbcType=VARCHAR}
+  </update>
+  
+
+</mapper>

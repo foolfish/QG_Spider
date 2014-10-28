@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.ICMBTransferBillDao" >
+
+  <select id="findById" resultType="com.lkb.bean.CMBTransferBill" parameterType="String">
+    select * from t_cmbtransferbill
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteCMBTransferBill" parameterType="String" >
+    delete from t_cmbtransferbill
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveCMBTransferBill" parameterType="com.lkb.bean.CMBTransferBill" >
+    insert into t_cmbtransferbill (id,baseUserId,transferTime,cardNo ,operation,pname,  amount)
+    values (#{id,jdbcType=VARCHAR},#{baseUserId,jdbcType=VARCHAR}, #{transferTime,jdbcType=TIMESTAMP}, #{cardNo,jdbcType=VARCHAR}, #{operation,jdbcType=VARCHAR},#{pName,jdbcType=VARCHAR},
+      #{amount,jdbcType=DECIMAL})
+  </insert>
+
+  
+   <update id="update" parameterType="com.lkb.bean.CMBTransferBill" >
+    update t_cmbtransferbill   
+    <set > 
+     <if test="baseUserId != null" >
+        baseUserId = #{baseUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="transferTime != null" >
+        transferTime = #{transferTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cardNo != null" >
+        cardNo = #{cardNo,jdbcType=VARCHAR},
+      </if>
+       <if test="operation != null" >
+        operation = #{operation,jdbcType=VARCHAR},
+      </if>
+       <if test="pName != null" >
+        pname = #{pName,jdbcType=VARCHAR},
+    
+      </if>
+       
+      
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="getBillByBaseUserIdDate" parameterType="map" resultType="com.lkb.bean.CMBTransferBill">
+ SELECT * FROM `t_cmbtransferbill` t  WHERE t.baseUserId=#{baseUserId}  AND t.transferTime=#{transferTime}
+</select>
+ 
+
+ 
+
+</mapper>

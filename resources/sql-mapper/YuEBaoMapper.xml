@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IYuEBaoDao" >
+
+  <select id="findById" resultType="com.lkb.bean.YuEBao" parameterType="String">
+    select * from t_yuebao
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteYuEBao" parameterType="String" >
+    delete from t_yuebao
+    where id = #{id}
+  </delete>
+
+
+	
+  <insert id="saveYuEBao" parameterType="com.lkb.bean.YuEBao" >
+    insert into t_yuebao (id, cTime,alipayName,amountType,amount)
+    values ( #{id,jdbcType=VARCHAR},    #{cTime,jdbcType=TIMESTAMP}, #{alipayName,jdbcType=VARCHAR}, #{amountType,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=DECIMAL})
+  </insert>
+	
+ <select id="getYuEBaoByBaseUseridsource" parameterType="map" resultType="com.lkb.bean.YuEBao">
+ SELECT * FROM `t_yuebao` t  WHERE t.alipayName=#{alipayName} AND t.cTime=#{cTime} 
+</select>
+
+ <select id="getYuEBaoByAlipay" parameterType="String" resultType="com.lkb.bean.YuEBao">
+ SELECT * FROM `t_yuebao` t  WHERE t.alipayName=#{alipayName}
+</select>
+
+ <select id="getYuEBaoPersonalStatistical" parameterType="map" resultType="map">
+ SELECT concat( MIN(DATE_FORMAT(t.cTime,'%Y.%m')),'-',MAX(DATE_FORMAT(t.cTime,'%Y.%m'))) as dataLength, MAX(t.amount) AS maxAmount, MIN(t.amount) AS minAmount,round(avg(tmon.amount),2) as monAmount,round(avg(ttt.amount),2) as yearAmount FROM t_yuebao as t,(select amount from t_yuebao where alipayName=#{alipayName} and cTime>#{yearDay}) as ttt,(select amount from t_yuebao where alipayName=#{alipayName} and cTime>#{lmDay}) as tmon  WHERE t.alipayName=#{alipayName} order by t.cTime DESC;  
+</select>
+
+<select id="getEveryAmount" parameterType="map" resultType="map">
+ SELECT  SUM(amount) as amount FROM `t_yuebao` WHERE alipayName = #{alipayName}  AND cTime LIKE #{cTime}     
+</select>
+
+
+   <update id="update" parameterType="com.lkb.bean.YuEBao" >
+    update t_yuebao
+    <set > 
+       <if test="cTime != null" >
+        cTime = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="alipayName != null" >
+        alipayName = #{alipayName,jdbcType=VARCHAR},
+      </if>
+      <if test="amountType != null" >
+        amountType = #{amountType,jdbcType=VARCHAR},
+      </if>
+		<if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+<select id="getAmountCount" parameterType="map" resultType="map">
+	SELECT SUM(amount) AS amount,COUNT(*) AS acount FROM `t_yuebao` t1 LEFT JOIN `t_user` t2 ON t1.alipayName = t2.loginName 
+WHERE t2.parentId= #{baseUserId} AND usersource='ZHIFUBAO'
+</select>
+
+<select id="getMaxYuEBaoTime" parameterType="com.lkb.bean.YuEBao" resultType="com.lkb.bean.YuEBao">
+ 	SELECT * FROM t_yuebao t  WHERE t.alipayName=#{alipayName} order by t.cTime desc limit 1
+</select>		
+
+<select id="getMaxYuEBaoAssignTime" parameterType="map" resultType="String">
+ 	SELECT t.cTime FROM t_yuebao t  WHERE t.alipayName=#{alipayName} order by t.cTime desc
+</select>
+ <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_yuebao (id, cTime,alipayName,amountType,amount) values  
+    <foreach collection="list" item="pay" index="index"  
+        separator=",">  
+        ( #{pay.id,jdbcType=VARCHAR},    #{pay.cTime,jdbcType=TIMESTAMP}, #{pay.alipayName,jdbcType=VARCHAR}, #{pay.amountType,jdbcType=VARCHAR}, 
+      #{pay.amount,jdbcType=DECIMAL}
+     	)  
+     	
+    </foreach>  
+   </insert> 	
+</mapper>

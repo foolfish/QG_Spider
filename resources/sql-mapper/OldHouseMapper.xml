@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IOldHouseDao" >
+
+  <select id="findById" resultType="com.lkb.bean.OldHouse" parameterType="int">
+    select * from t_old_hourse
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteOldHouse" parameterType="int" >
+    delete from t_old_hourse
+    where id = #{id}
+  </delete>
+
+  <insert id="saveOldHouse" parameterType="com.lkb.bean.OldHouse" >
+    insert into t_old_hourse (id,city,hname,hlocation,havg,hall,hsize,hst,hfloor,hfloors,hdirection,hyear)
+    values (#{id,jdbcType=INTEGER},#{city,jdbcType=VARCHAR},#{hname,jdbcType=VARCHAR}, #{hlocation,jdbcType=VARCHAR},    
+     #{havg,jdbcType=DECIMAL}, #{hall,jdbcType=DECIMAL},#{hsize,jdbcType=DECIMAL},
+      #{hst,jdbcType=VARCHAR}, #{hfloor,jdbcType=INTEGER}, #{hfloors,jdbcType=INTEGER}, 
+      #{hdirection,jdbcType=VARCHAR}, #{hyear,jdbcType=INTEGER})
+  </insert>
+
+   <update id="update" parameterType="com.lkb.bean.OldHouse" >
+    update t_old_hourse   
+    <set > 
+     <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+     <if test="hname != null" >
+        hname = #{hname,jdbcType=VARCHAR},
+      </if>
+      <if test="hlocation != null" >
+        hlocation = #{hlocation,jdbcType=VARCHAR},
+      </if>
+   	  <if test="havg != null" >
+        havg = #{havg,jdbcType=DECIMAL},
+      </if>   
+      
+      <if test="hall != null" >
+        hall = #{hall,jdbcType=DECIMAL},
+      </if>  
+       <if test="hsize != null" >
+        hsize = #{hsize,jdbcType=DECIMAL},
+      </if>  
+       <if test="hst != null" >
+        hst = #{hst,jdbcType=VARCHAR},
+      </if>
+       <if test="hfloor != null" >
+        hfloor = #{hfloor,jdbcType=INTEGER},
+      </if>
+       <if test="hfloors != null" >
+        hfloors = #{hfloors,jdbcType=INTEGER},
+      </if>
+      
+        <if test="hdirection != null" >
+        hdirection = #{hdirection,jdbcType=VARCHAR},
+      </if>
+       <if test="hyear != null" >
+        hyear = #{hyear,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+    <select id="getAllCity" resultType="map">
+	select distinct(city) as city from t_old_hourse
+</select>
+  
+</mapper>

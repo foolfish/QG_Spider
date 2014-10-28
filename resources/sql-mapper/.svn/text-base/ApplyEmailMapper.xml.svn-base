@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IApplyEmailDao" >
+  <select id="get" resultType="com.lkb.bean.ApplyEmail" parameterType="decimal">
+    select * from t_applyEmail
+    where id = #{id}
+  </select>
+  
+  <select id="getAll" resultType="com.lkb.bean.ApplyEmail" >
+   	select * from t_applyEmail order by applyTime desc
+  </select>
+
+  <insert id="save" parameterType="com.lkb.bean.ApplyEmail" >
+    insert into t_applyEmail (id, email,ctype,applyTime,teleno)
+    values (#{id,jdbcType=DECIMAL},  #{email,jdbcType=VARCHAR}, #{ctype,jdbcType=INTEGER},#{applyTime,jdbcType=TIMESTAMP}, #{teleno,jdbcType=VARCHAR})
+  </insert>
+	
+ <update id="update" parameterType="com.lkb.bean.ApplyEmail" >
+    update t_applyEmail   
+    <set > 
+     <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="ctype != null" >
+        ctype = #{ctype,jdbcType=INTEGER},
+      </if>
+       <if test="applyTime != null" >
+        applyTime = #{applyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="teleno != null" >
+        teleno = #{teleno,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+		
+<select id="getApplyEmailEt" parameterType="map" resultType="com.lkb.bean.ApplyEmail">
+ SELECT * FROM `t_applyEmail` t  WHERE t.email=#{email} AND t.ctype=#{ctype} AND t.teleno=#{teleno}
+</select>
+
+		
+</mapper>

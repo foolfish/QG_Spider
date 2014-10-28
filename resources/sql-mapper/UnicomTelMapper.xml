@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IUnicomTelDao" >
+
+  <select id="findById" resultType="com.lkb.bean.UnicomTel" parameterType="String">
+    select * from t_unicomtel
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteUnicomTel" parameterType="String" >
+    delete from t_unicomtel
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveUnicomTel" parameterType="com.lkb.bean.UnicomTel" >
+    insert into t_unicomtel (id,cTime,cName ,teleno,dependCycle, cAllPay,jbyzf,bdthf,ctthf,mythf,dxtxf,zzywf,dsf,tff,qtf,iscm)
+    values (#{id,jdbcType=VARCHAR}, #{cTime,jdbcType=TIMESTAMP}, #{cName,jdbcType=VARCHAR}, #{teleno,jdbcType=VARCHAR},
+      #{dependCycle,jdbcType=VARCHAR}, #{cAllPay,jdbcType=DECIMAL},#{jbyzf,jdbcType=DECIMAL},#{bdthf,jdbcType=DECIMAL},#{ctthf,jdbcType=DECIMAL},
+      #{mythf,jdbcType=DECIMAL},#{dxtxf,jdbcType=DECIMAL},#{zzywf,jdbcType=DECIMAL},#{dsf,jdbcType=DECIMAL},
+      #{tff,jdbcType=DECIMAL}, #{qtf,jdbcType=DECIMAL}, 
+  	#{iscm,jdbcType=INTEGER})
+  </insert>
+
+   <update id="update" parameterType="com.lkb.bean.UnicomTel" >
+    update t_unicomtel   
+    <set > 
+    
+      <if test="cTime != null" >
+        cTime = #{cTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cName != null" >
+        cName = #{cName,jdbcType=VARCHAR},
+      </if>
+       <if test="teleno != null" >
+        teleno = #{teleno,jdbcType=VARCHAR},
+      </if>
+       <if test="dependCycle != null" >
+        dependCycle = #{dependCycle,jdbcType=VARCHAR},
+      </if>
+      <if test="cAllPay != null" >
+        cAllPay = #{cAllPay,jdbcType=DECIMAL},
+      </if>   
+      <if test="jbyzf != null" >
+        jbyzf = #{jbyzf,jdbcType=DECIMAL},
+      </if> 
+       <if test="bdthf != null" >
+        bdthf = #{bdthf,jdbcType=DECIMAL},
+      </if> 
+       <if test="ctthf != null" >
+        ctthf = #{ctthf,jdbcType=DECIMAL},
+      </if> 
+       <if test="mythf != null" >
+        mythf = #{mythf,jdbcType=DECIMAL},
+      </if> 
+       <if test="dxtxf != null" >
+        dxtxf = #{dxtxf,jdbcType=DECIMAL},
+      </if> 
+       <if test="zzywf != null" >
+        zzywf = #{zzywf,jdbcType=DECIMAL},
+      </if> 
+       <if test="dsf != null" >
+        dsf = #{dsf,jdbcType=DECIMAL},
+      </if> 
+        <if test="tff != null" >
+        tff = #{tff,jdbcType=DECIMAL},
+      </if> 
+      <if test="qtf != null" >
+        qtf = #{qtf,jdbcType=DECIMAL},
+      </if>
+       <if test="iscm != null" >
+        iscm = #{iscm,jdbcType=INTEGER},
+      </if> 
+      
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getUnicomTelBybc" parameterType="map" resultType="com.lkb.bean.UnicomTel">
+ 	SELECT * FROM `t_unicomtel` t  WHERE  t.cTime=#{cTime}
+ 	 <if test="teleno != null" >
+      AND  teleno = #{teleno}
+      </if> 
+</select>
+
+
+ <select id="getUnicomTelForReport1" parameterType="map" resultType="map">
+ 	select teleno,avg(cAllPay) as avg,min(cTime) as earlest  from `t_unicomtel` t where t.teleno=#{teleno}
+</select>
+<select id="getEveryAmount" parameterType="map" resultType="map">
+ SELECT SUM(cAllPay) AS amount FROM  `t_unicomtel` WHERE  teleno in  
+  <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach> 
+ AND cTime LIKE  #{cTime} 
+</select>
+<select id="getFormatCtime" parameterType="String" resultType="map">
+select DATE_FORMAT(t.ctime, '%Y%m') as time,t.callpay as callPay from `t_unicomtel` t where t.teleno = #{teleno} order by t.ctime desc
+</select>
+  
+   <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_unicomtel ( id,cTime,cName ,teleno,dependCycle, cAllPay,jbyzf,bdthf,ctthf,mythf,dxtxf,zzywf,dsf,tff,qtf,iscm) values  
+    <foreach collection="list" item="unicomtel" index="index"  
+        separator=",">  
+        ( 
+     
+	  #{unicomtel.id,jdbcType=VARCHAR}, #{unicomtel.cTime,jdbcType=TIMESTAMP}, #{unicomtel.cName,jdbcType=VARCHAR}, #{unicomtel.teleno,jdbcType=VARCHAR},
+      #{unicomtel.dependCycle,jdbcType=VARCHAR}, #{unicomtel.cAllPay,jdbcType=DECIMAL},#{unicomtel.jbyzf,jdbcType=DECIMAL},#{unicomtel.bdthf,jdbcType=DECIMAL},#{unicomtel.ctthf,jdbcType=DECIMAL},
+      #{unicomtel.mythf,jdbcType=DECIMAL},#{unicomtel.dxtxf,jdbcType=DECIMAL},#{unicomtel.zzywf,jdbcType=DECIMAL},#{unicomtel.dsf,jdbcType=DECIMAL},
+      #{unicomtel.tff,jdbcType=DECIMAL}, #{unicomtel.qtf,jdbcType=DECIMAL}, 
+  	  #{unicomtel.iscm,jdbcType=INTEGER}
+     
+     	)  
+    </foreach>  
+   </insert> 
+
+
+
+</mapper>

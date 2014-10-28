@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.ICBCCheckBillItemDao" >
+
+  <select id="findById" resultType="com.lkb.bean.ICBCCheckBillItem" parameterType="String">
+    select * from t_icbccheckbillitem
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteICBCCheckBillItem" parameterType="String" >
+    delete from t_icbccheckbillitem
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveICBCCheckBillItem" parameterType="com.lkb.bean.ICBCCheckBillItem" >
+    insert into t_icbccheckbillitem ( id,checkBillId,cardNo,tradeDate,tradeKeepDate,tradeType,tradePlace,tradeAmount,
+    tradeCurrency,tradeMode)
+    values (#{id,jdbcType=VARCHAR},#{checkBillId,jdbcType=VARCHAR},#{cardNo,jdbcType=VARCHAR},
+    		#{tradeDate,jdbcType=TIMESTAMP},#{tradeKeepDate,jdbcType=TIMESTAMP},#{tradeType,jdbcType=VARCHAR},
+    		#{tradePlace,jdbcType=VARCHAR},#{tradeAmount,jdbcType=DECIMAL} ,#{tradeCurrency,jdbcType=VARCHAR},
+    		#{tradeMode,jdbcType=VARCHAR}
+     )
+  </insert>
+
+  
+   <update id="update" parameterType="com.lkb.bean.ICBCCheckBillItem" >
+    update t_icbccheckbillitem   
+    <set > 
+     <if test="checkBillId != null" >
+        checkBillId = #{checkBillId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        cardNo = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="tradeDate != null" >
+        tradeDate = #{tradeDate,jdbcType=TIMESTAMP},
+      </if>
+      
+      <if test="tradeKeepDate != null" >
+        tradeKeepDate = #{tradeKeepDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="tradeType != null" >
+        tradeType = #{tradeType,jdbcType=VARCHAR},
+      </if>
+       <if test="tradePlace != null" >
+        tradePlace = #{tradePlace,jdbcType=VARCHAR},
+      </if>
+
+      <if test="tradeAmount != null" >
+        tradeAmount = #{tradeAmount,jdbcType=DECIMAL} ,
+      </if>
+      <if test="tradeCurrency != null" >
+        tradeCurrency = #{tradeCurrency,jdbcType=VARCHAR},
+      </if>
+       <if test="tradeMode != null" >
+        tradeMode = #{tradeMode,jdbcType=VARCHAR},
+      </if>
+  
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+<select id="getBillItemByCheckBillIdDate" parameterType="map" resultType="com.lkb.bean.ICBCCheckBillItem">
+ SELECT * FROM `t_icbccheckbillitem` t  WHERE t.checkBillId=#{checkBillId}  AND t.tradeKeepDate=#{tradeKeepDate} AND t.tradeType=#{tradeType} AND t.tradePlace=#{tradePlace} AND t.tradeAmount=#{tradeAmount} AND t.tradeMode=#{tradeMode} 
+</select>
+ 
+
+ 
+
+</mapper>

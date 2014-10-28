@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.ILeaseHouseDao" >
+
+  <select id="findById" resultType="com.lkb.bean.LeaseHouse" parameterType="int">
+    select * from t_lease_house
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteLeaseHouse" parameterType="int" >
+    delete from t_lease_house
+    where id = #{id}
+  </delete>
+
+  <insert id="saveLeaseHouse" parameterType="com.lkb.bean.LeaseHouse" >
+    insert into t_lease_house (id,city,h_loc1,h_loc2,hname,hlocation,hlocation2,havg,hsize,hst,h_degree,hfloor,hfloors,hdirection)
+    values (#{id,jdbcType=INTEGER},#{city,jdbcType=VARCHAR},#{h_loc1,jdbcType=VARCHAR},#{h_loc2,jdbcType=VARCHAR},
+    #{hname,jdbcType=VARCHAR},#{hlocation,jdbcType=VARCHAR},#{hlocation2,jdbcType=VARCHAR},
+    #{havg,jdbcType=DECIMAL},#{hsize,jdbcType=DECIMAL},#{hst,jdbcType=VARCHAR},#{h_degree,jdbcType=VARCHAR},
+     #{hfloor,jdbcType=INTEGER}, #{hfloors,jdbcType=INTEGER}, #{hdirection,jdbcType=VARCHAR})
+  </insert>
+  
+
+   <update id="update" parameterType="com.lkb.bean.LeaseHouse" >
+    update t_lease_house   
+    <set > 
+     <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+     <if test="h_loc1 != null" >
+        h_loc1 = #{h_loc1,jdbcType=VARCHAR},
+      </if>
+      <if test="h_loc2 != null" >
+        h_loc2 = #{h_loc2,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="hname != null" >
+        hname = #{hname,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="hlocation != null" >
+        hlocation = #{hlocation,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="hlocation2 != null" >
+        hlocation2 = #{hlocation2,jdbcType=VARCHAR},
+      </if>
+   	  <if test="havg != null" >
+        havg = #{havg,jdbcType=DECIMAL},
+      </if>   
+   	  <if test="hsize != null" >
+        hsize = #{hsize,jdbcType=DECIMAL},
+      </if>   
+	  <if test="hst != null" >
+        hst = #{hst,jdbcType=VARCHAR},
+      </if>
+       <if test="h_degree != null" >
+        h_degree = #{h_degree,jdbcType=VARCHAR},
+      </if>
+       <if test="hfloor != null" >
+        hfloor = #{hfloor,jdbcType=INTEGER},
+      </if>
+       <if test="hfloors != null" >
+        hfloors = #{hfloors,jdbcType=INTEGER},
+      </if>
+  	<if test="hdirection != null" >
+        hdirection = #{hdirection,jdbcType=VARCHAR},
+      </if>
+
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+    <select id="getAllCity" resultType="map">
+	select distinct(city) as city from t_lease_house
+</select>
+  
+</mapper>

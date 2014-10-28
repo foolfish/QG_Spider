@@ -1,0 +1,67 @@
+http://iservice.10010.com/index_.html
+账号：369768231@qq.com test001 
+（山西）联通： 13134633106 880717  15611807400 793580
+（上海）联通  13248212845  密码 132482
+
+https://uac.10010.com/portal/homeLogin
+
+
+
+https://uac.10010.com/portal/Service/MallLogin?
+callback=jQuery17203771386061286422_1397393263053&
+redirectURL=http%3A%2F%2Fwww.10010.com
+&userName=13248212845
+&password=132482
+&pwdType=01
+&productType=01
+&redirectType=01
+&rememberMe=1
+&_=1397393283755
+
+
+历史账单URL：
+http://iservice.10010.com/ehallService/static/login/r?menuid=000100020001
+
+
+记录用户基本信息URL（post）
+http://iservice.10010.com/ehallService/static/queryIntegratedInfo/execute/YH102010001/Query_IntegratedInfo.processCommonQuery/Result/commonQuery/null/1?_=1397393886366&menuid=000100020001
+
+http://iservice.10010.com/ehallService/static/historyBiil/execute/YH102010002/QUERY_YH102010002.processData/QueryYH102010002_Data/201402/1        ?_=1397393888848&menuid=000100020001
+http://iservice.10010.com/ehallService/static/historyBiil/execute/YH102010002/QUERY_YH102010002.processData/QueryYH102010002_Data/201312/undefined?_=1397394372752&menuid=000100020001
+
+
+服务密码&pwdType=01  动态密码 &pwdType=02
+https://uac.10010.com/portal/Service/MallLogin?callback=jQuery1720728970877297177_1397396144136&redirectURL=http%3A%2F%2Fiservice.10010.com%2Findex_.html&userName=13248212845&password=333333&pwdType=02&productType=01&redirectType=01&rememberMe=1&_=1397396263048
+
+发送动态密码链接
+https://uac.10010.com/portal/Service/SendMSG?callback=jQuery1720728970877297177_1397396144137&mobile=13248212845&_=1397396366472
+
+
+
+
+https://uac.10010.com/portal/Service/MallLogin?callback=jQuery17203771386061286422_1397393263053&redirectURL=http%3A%2F%2Fwww.10010.com&userName=13248212845&password=132482&pwdType=01&productType=01&redirectType=01&rememberMe=1&_=1397393283755
+如果正确，返回：jQuery17204175715995450016_1397399063384({resultCode:"0000",redirectURL:"http://iservice.10010.com/index_.html"});
+
+
+密码不正确：resultCode=7007  
+needvode=0；需要验证码
+jQuery1720728970877297177_1397396144140({resultCode:"7007",redirectURL:"http://iservice.10010.com/index_.html",errDesc:"null",msg:'?”¨??·?????–??????????????????è????‰3??????????€?<a href="https://uac.10010.com/cust/resetpass/resetpassInit" target="_blank" style="color: #36c;cursor: pointer;text-decoration:underline;">???è?°?????????</a>',needvode:"1"});
+
+jQuery1720728970877297177_1397396144141({resultCode:"7007",redirectURL:"http://iservice.10010.com/index_.html",errDesc:"null",msg:'?”¨??·?????–??????????????????è????‰2??????????€?<a href="https://uac.10010.com/cust/resetpass/resetpassInit" target="_blank" style="color: #36c;cursor: pointer;text-decoration:underline;">???è?°?????????</a>',needvode:"0"});
+
+
+验证码下载地址：https://uac.10010.com/portal/Service/CreateImage?t=1397396526348
+
+输入验证码：https://uac.10010.com/portal/Service/CtaIdyChk?callback=jQuery1720728970877297177_1397396144142&verifyCode=m3e3&verifyType=1&_=1397396594443 
+返回结果：jQuery1720728970877297177_1397396144142({"resultCode":"true"}); 代表验证码 验证成功
+          jQuery172032380812359042466_1397383999507({"resultCode":"false"});代表验证码 验证不成功
+
+
+需要验证码的返回地址是：
+https://uac.10010.com/portal/Service/MallLogin?callback=jQuery172032380812359042466_1397383999503&redirectURL=http%3A%2F%2Fiservice.10010.com%2Findex_.html&userName=13212321232&password=132482&pwdType=01&productType=01&verifyCode=wnxm&uvc=bu977106ef5d0c8e2137d0456c95ab7a9c1yi4&redirectType=01&rememberMe=1&_=1397402243249
+
+
+
+
+
+var QueryYH102010002_Data={"rspPublicArgs":{"beginDate":"20131201","bizInfo":["031_11021000100"],"cityCode":"","endDate":"20131231","netType":"02","payType":"","provinceCode":"","queryBeginEndDate":"2014-03-01至2014-03-31","queryDate":"2014年04月14 12:46:33","rspArgs":{"CRBT":"","MMSpointTopoint":"","SMSpointTopoint":"","TGAcallFee":"","TGAroam":"","VPTGAcallFee":"","VPTGAroam":"","VPdomesticCallFee":"","VPinternationalCallFee":"","VPinternationalRoam":"","YAxisMaxValue":"99.9","alarmClockService":"","available":"","basicMonthlyFee":"","basicPackage":"","callFee":"","callerJX":"","callers":"","columnFixList":[],"columnList":[{"color":"32CD32","name":"基本月租","value":"18.00"},{"color":"32CD32","name":" 本地通话费","value":"29.90"},{"color":"32CD32","name":" 长途通话费","value":"7.11"},{"color":"32CD32","name":" 漫游通话费","value":"0.00"},{"color":"32CD32","name":" 短信通信费","value":"11.00"},{"color":"32CD32","name":" 增值业务费","value":"0.00"},{"color":"32CD32","name":" 代收费(信息费)","value":"0.00"},{"color":"32CD32","name":" 特服费","value":"0.00"},{"color":"32CD32","name":" 其他费用","value":"0.00"}],"customName":"上海","discountFee":"0.00","domesticCallFee":"","exceptionMsg":"","fixFeeSum":"","historyfee":[],"increaseBussinessFee":"","increaseFen":"","increasePackage":"","infoMMS":"","informedSecretary":"","instantMessaging":"","internationalCallFee":"","internationalRoam":"","itemList":[{"fee":"18.00","name":"基本月租"},{"fee":"29.90","name":" 本地通话费"},{"fee":"7.11","name":" 长途通话费"},{"fee":"11.00","name":" 短信通信费"}],"list":[{"fee":"18.00","style":"bold","name":"基本月租"},{"fee":"29.90","style":"bold","name":" 本地通话费"},{"fee":"7.11","style":"bold","name":" 长途通话费"},{"fee":"0.00","style":"bold","name":" 漫游通话费"},{"fee":"11.00","style":"bold","name":" 短信通信费"},{"fee":"0.00","style":"bold","name":" 增值业务费"},{"fee":"0.00","style":"bold","name":" 代收费(信息费)"},{"fee":"0.00","style":"bold","name":" 特服费"},{"fee":"0.00","style":"bold","name":" 其他费用"}],"listObjectClassName":"list.get(0).className=java.util.HashMap","map":null,"mapKeys":"","month":"2013年12月01日 至 2013年12月31日","monthFixedFee":"","notDisturbService":"","obj":null,"onepass":"","packageType":"","payTotal":"66.01","personalisedRing":"","phoneEmail":"","phoneMusic":"","phoneNet":"","phoneNewPaper":"","phoneTV":"","preMonthInterral":"108","printDateForView":"2014年04月14日","proviceName":"上海","queryDateForView":"","queryMonth":"2014-04-14","queryType":"undefined","set":[],"str2":"","str7":"","substituteFee":"","sumFee":"66.01","superpositionPackage":"","taocanyuliang":"","tecip01007DTO":null,"tecip01008DTO":null,"tecip01018DTO":[],"tecip2000111DTO":null,"telnavigation":"","time":{"date":14,"day":1,"hours":12,"minutes":46,"month":3,"seconds":34,"time":1397450794710,"timezoneOffset":-480,"year":114},"totalFee":"","totalIntegral":"638","unicomNICAM":"","unicomSMS":"","unicomSecretary":"","useIntegral":"638","usedFen":"","usedIntegral":"0","videophoneFee":""},"rspCode":"00","rspDesc":"OK","templateId":"1","userNumber":"13248212845"}};QUERY_YH102010002.processData(QueryYH102010002_Data);

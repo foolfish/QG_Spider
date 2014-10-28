@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.ITelcomMessageDao" >
+
+  <select id="findById" resultType="com.lkb.bean.TelcomMessage" parameterType="String">
+    select * from t_telcommessage
+    where id = #{id}
+  </select>
+  
+  <delete id="delete" parameterType="String" >
+    delete from t_telcommessage
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="save" parameterType="com.lkb.bean.TelcomMessage" >
+    insert into t_telcommessage (id, businessType, sentTime, recevierPhone, allPay, phone, createTs)
+    values (#{id,jdbcType=VARCHAR}, #{businessType,jdbcType=VARCHAR},#{sentTime,jdbcType=TIMESTAMP}, #{recevierPhone,jdbcType=VARCHAR},
+      #{allPay,jdbcType=DECIMAL},  #{phone,jdbcType=VARCHAR}, #{createTs,jdbcType=TIMESTAMP})
+  </insert>
+  
+	
+ 
+   <update id="update" parameterType="com.lkb.bean.TelcomMessage" >
+    update t_telcommessage   
+    <set > 
+    
+     <if test="businessType != null" >
+        tradeType = #{businessType,jdbcType=VARCHAR},
+      </if>
+      <if test="sentTime != null" >
+        cTime = #{sentTime,jdbcType=TIMESTAMP},
+      </if>     
+       <if test="recevierPhone != null" >
+        recevierPhone = #{recevierPhone,jdbcType=VARCHAR },
+      </if>
+     
+      <if test="allPay != null" >
+        allPay = #{allPay,jdbcType=DECIMAL },
+      </if>
+         <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR },
+      </if>
+         <if test="createTs != null" >
+        iscm = #{createTs,jdbcType=TIMESTAMP },
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+ <select id="getByPhone" parameterType="map" resultType="com.lkb.bean.TelcomMessage">
+ 	SELECT * FROM `t_telcommessage` t  WHERE t.phone=#{phone} AND t.sentTime=#{sentTime}
+</select>
+ <select id="getMaxSentTime" parameterType="String" resultType="com.lkb.bean.TelcomMessage">
+ 	SELECT * FROM `t_telcommessage` t  WHERE t.phone=#{phone} order by sentTime desc limit 1
+</select>
+
+ <select id="getTelcomMessageForReport" parameterType="map" resultType="map">
+ 	select  recevierPhone,businessType ,count(id) as num from
+ 	`t_telcommessage` t  WHERE t.phone=#{phone}  group by t.recevierPhone order by t.recevierPhone;
+</select>
+ <select id="getTelcomMessageForReport2" parameterType="map" resultType="map">
+ select max(sentTime) as latest from `t_telcommessage` t  where t.phone=#{phone};
+</select>
+
+ <select id="getList" parameterType="String" resultType="map">
+ 	SELECT businessType, sentTime, recevierPhone, allPay, phone, createTs from `t_telcommessage` t   WHERE t.phone=#{phone}
+</select>
+<select id="getListByPhone" parameterType="String" resultType="map">
+ 	SELECT t.sentTime, t.recevierPhone as receiverPhone,t.businessType as tradeWay,'' as sentAddr from `t_telcommessage` t   WHERE t.phone=#{phone} order by senttime desc;
+</select>
+
+  <insert id="insertbatch" parameterType="java.util.List">  
+ 
+    insert into t_telcommessage ( id, businessType, sentTime,  
+    recevierPhone, allPay, phone, createTs ) values  
+    <foreach collection="list" item="telcommessage" index="index"  
+        separator=",">  
+        ( #{telcommessage.id,jdbcType=VARCHAR}, #{telcommessage.businessType,jdbcType=VARCHAR},#{telcommessage.sentTime,jdbcType=TIMESTAMP}, #{telcommessage.recevierPhone,jdbcType=VARCHAR},
+     	 #{telcommessage.allPay,jdbcType=DECIMAL},  #{telcommessage.phone,jdbcType=VARCHAR}, #{telcommessage.createTs,jdbcType=TIMESTAMP} )  
+    </foreach>  
+   </insert> 
+</mapper>

@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lkb.dao.IOrderDao" >
+
+  <select id="findById" resultType="com.lkb.bean.Order" parameterType="String">
+    select * from t_order
+    where id = #{id}
+  </select>
+  
+  <delete id="deleteOrder" parameterType="String" >
+    delete from t_order
+    where id = #{id}
+  </delete>
+ 
+
+  <insert id="saveOrder" parameterType="com.lkb.bean.Order" >
+    insert into t_order (id,loginName,orderId, productNames, receiver, money,buyway,buyTime,orderstatus,ordersource,recevierAddr,recevierFixPhone,recevierTelephone,recevierEmail,
+    recevierPost)
+    values (#{id,jdbcType=VARCHAR},#{loginName,jdbcType=VARCHAR},#{orderId,jdbcType=VARCHAR}, #{productNames,jdbcType=VARCHAR}, #{receiver,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DECIMAL}, #{buyway,jdbcType=VARCHAR}, #{buyTime,jdbcType=TIMESTAMP}
+      , #{orderstatus,jdbcType=VARCHAR}, #{ordersource,jdbcType=VARCHAR},
+      #{recevierAddr,jdbcType=VARCHAR},#{recevierFixPhone,jdbcType=VARCHAR},#{recevierTelephone,jdbcType=VARCHAR},#{recevierEmail,jdbcType=VARCHAR}
+      ,#{recevierPost,jdbcType=VARCHAR})
+  </insert>
+
+<select id="getOrderByOrderIdsource" parameterType="map" resultType="com.lkb.bean.Order">
+ SELECT * FROM `t_order` t  WHERE t.orderId=#{orderId} AND t.ordersource=#{ordersource}
+</select>
+
+ <select id="getOrderByLoginNamesource" parameterType="map" resultType="com.lkb.bean.Order">
+ SELECT * FROM `t_order` t  WHERE t.loginName=#{loginName} AND t.ordersource=#{ordersource} AND t.orderstatus=#{orderstatus} ORDER BY t.buyTime 
+</select>
+
+<select id="getOrderByOrderIdSourcePid" parameterType="map" resultType="com.lkb.bean.Order">
+ SELECT * FROM `t_order` t  WHERE t.orderId=#{orderId} AND t.ordersource=#{ordersource} AND t.productId=#{productId}
+</select>
+
+
+<select id="getAddrByReceiver" parameterType="map" resultType="map">
+ SELECT DISTINCT(recevierAddr) as recevierAddr,buyTime,ordersource FROM t_order WHERE receiver=#{receiver} AND loginName=#{loginName}  GROUP BY recevierAddr ORDER BY buyTime DESC
+</select>
+
+<select id="getPerAll" parameterType="map" resultType="int">
+SELECT COUNT(DISTINCT(orderId))  FROM `t_order` WHERE loginName =#{loginName} AND orderstatus='已完成' AND ordersource = #{ordersource}
+</select>
+
+<select id="getPerPart" parameterType="map" resultType="int">
+SELECT COUNT(DISTINCT(orderId)) FROM `t_order` WHERE loginName = #{loginName} AND orderstatus='已完成' AND ordersource = #{ordersource} AND receiver= #{receiver}
+</select>
+
+<select id="getRecentDay" parameterType="map" resultType="map">
+select buyTime from t_order where loginName=#{loginName}  and ordersource=#{ordersource} order by buyTime desc limit 1
+</select>
+
+<select id="getAmountCount" parameterType="map" resultType="map">
+	SELECT SUM(money) AS amount,COUNT(*) AS acount,ordersource AS source FROM t_order WHERE id IN (SELECT id FROM t_order WHERE  loginName = #{loginName} AND orderstatus='已完成' GROUP BY orderId) GROUP BY source
+	</select>
+
+<select id="getTransactionByName" parameterType="map" resultType="map">
+SELECT receiver,SUM(money) AS money,COUNT(id) AS acount,ordersource FROM `t_order` WHERE id IN (SELECT id FROM t_order WHERE loginName= #{loginName} AND orderstatus='已完成' GROUP BY orderId)
+GROUP BY receiver,ordersource ORDER BY acount DESC,receiver 
+</select>
+
+<select id="getTransactionByAddr" parameterType="map" resultType="map">
+SELECT recevierAddr,SUM(money) AS money,COUNT(id) AS acount,ordersource FROM `t_order` WHERE id IN (SELECT id FROM t_order WHERE loginName= #{loginName} AND orderstatus='已完成' GROUP BY orderId)
+GROUP BY recevierAddr,ordersource ORDER BY acount DESC,recevierAddr
+</select>
+
+<select id="getSomeInfo" parameterType="map" resultType="map">
+SELECT SUM(money) AS money,COUNT(orderId) AS ordercount, MAX(money) AS maxmoney  FROM  `t_order` 
+WHERE loginName= #{loginName}  AND ordersource =#{ordersource}  AND (orderstatus='已完成' OR orderstatus='交易成功')  AND buyTime &lt;= #{buyTime} 
+</select>
+
+<select id="getFirstDay" parameterType="map" resultType="map">
+SELECT buyTime  FROM  `t_order` 
+WHERE  loginName= #{loginName}  AND (orderstatus='已完成' OR orderstatus='交易成功')   AND ordersource =#{ordersource}  ORDER BY buyTime LIMIT 1
+</select>
+
+<select id="getFirstDays" parameterType="map" resultType="map">
+SELECT buyTime  FROM  `t_order` 
+WHERE  loginName in 
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+				AND (orderstatus='已完成' OR orderstatus='交易成功')    ORDER BY buyTime LIMIT 1
+</select>
+
+<select id="getRencentDays" parameterType="map" resultType="map">
+SELECT buyTime  FROM  `t_order` 
+WHERE  loginName in
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+  AND (orderstatus='已完成' OR orderstatus='交易成功')    ORDER BY buyTime desc LIMIT 1
+</select>
+
+<select id="getAllMaxMin" parameterType="map" resultType="map">
+SELECT MAX(money) AS maxmoney, MIN(money) AS minmoney ,sum(money) as allmoney FROM `t_order` WHERE loginName in
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+AND (orderstatus='已完成' OR orderstatus='交易成功') 
+</select>
+
+<select id="getPerMaxMin" parameterType="map" resultType="map">
+SELECT  sum(money) as allmoney FROM `t_order` WHERE loginName in 
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+AND (orderstatus='已完成' OR orderstatus='交易成功')  AND buyTime &gt;= #{buyTime} 
+</select>
+
+
+<select id="getEveryAmount" parameterType="map" resultType="map">
+ SELECT SUM(money) AS amount FROM `t_order` WHERE (orderstatus='已完成' OR orderstatus='交易成功')  AND
+ loginName in
+ <foreach item="item" index="index" collection="list"   
+                         open="(" separator="," close=")">  
+                        #{item}  
+                </foreach>  
+ 
+ AND buyTime LIKE #{buyTime} 
+</select>
+
+
+<select id="getOrderAllByLoginNamesource" parameterType="map" resultType="map">
+ SELECT loginName,orderId,receiver,money,buyway,buyTime,orderstatus,ordersource,recevierAddr as receiverAddr,recevierFixPhone as receiverFixPhone,
+ recevierTelephone as receiverTelephone,recevierEmail as receiverEmail,recevierPost as receiverPost FROM `t_order` t  WHERE t.loginName=#{loginName} AND t.ordersource=#{ordersource} AND t.orderstatus=#{orderstatus} ORDER BY t.buyTime 
+</select>
+
+
+
+   <update id="update" parameterType="com.lkb.bean.Order" >
+    update t_order
+   
+    <set > 
+     <if test="loginName != null" >
+        loginName = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        orderId = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="productNames != null" >
+        productNames = #{productNames,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        receiver = #{receiver,jdbcType=VARCHAR},
+      </if>
+        <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+        <if test="buyway != null" >
+        buyway = #{buyway,jdbcType=VARCHAR},
+      </if>	 		
+       <if test="buyTime != null" >
+        buyTime = #{buyTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="orderstatus != null" >
+        orderstatus = #{orderstatus,jdbcType=VARCHAR},
+      </if>
+       <if test="ordersource != null" >
+        ordersource = #{ordersource,jdbcType=VARCHAR},
+      </if>
+      <if test="recevierAddr != null" >
+        recevierAddr = #{recevierAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="recevierFixPhone != null" >
+        recevierFixPhone = #{recevierFixPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="recevierTelephone != null" >
+        recevierTelephone = #{recevierTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="recevierTelephone != null" >
+        recevierEmail = #{recevierEmail,jdbcType=VARCHAR},
+      </if>   
+ <if test="recevierPost != null" >
+        recevierPost = #{recevierPost,jdbcType=VARCHAR},
+      </if> 
+ 
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  
+<select id="getMaxOrderTime" parameterType="com.lkb.bean.Order" resultType="com.lkb.bean.Order">
+ 	SELECT * FROM t_order t  WHERE t.loginName=#{loginName}  and t.ordersource=#{ordersource} order by t.buyTime desc limit 1
+</select>
+<select id="getMaxOrderAssignTime" parameterType="map" resultType="map">
+ 	SELECT t.orderid,t.orderstatus FROM t_order t  WHERE t.loginName=#{loginName} and t.ordersource=#{ordersource} and t.buyTime&gt;#{buyTime} order by t.orderid desc
+</select>
+	
+	 <insert id="insertbatch" parameterType="java.util.List">  
+    insert into t_order ( id,loginName,orderId, productNames, receiver, money,buyway,buyTime,orderstatus,ordersource,recevierAddr,recevierFixPhone,recevierTelephone,recevierEmail,
+    recevierPost) values  
+    <foreach collection="list" item="order" index="index"  
+        separator=",">  
+        ( #{order.id,jdbcType=VARCHAR},#{order.loginName,jdbcType=VARCHAR},#{order.orderId,jdbcType=VARCHAR}, #{order.productNames,jdbcType=VARCHAR}, #{order.receiver,jdbcType=VARCHAR}, 
+      #{order.money,jdbcType=DECIMAL}, #{order.buyway,jdbcType=VARCHAR}, #{order.buyTime,jdbcType=TIMESTAMP}
+      , #{order.orderstatus,jdbcType=VARCHAR}, #{order.ordersource,jdbcType=VARCHAR},
+      #{order.recevierAddr,jdbcType=VARCHAR},#{order.recevierFixPhone,jdbcType=VARCHAR},#{order.recevierTelephone,jdbcType=VARCHAR},#{order.recevierEmail,jdbcType=VARCHAR}
+      ,#{order.recevierPost,jdbcType=VARCHAR}
+     	)  
+     	
+    </foreach>  
+   </insert> 
+ 
+
+</mapper>
